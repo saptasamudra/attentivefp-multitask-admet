@@ -1,0 +1,7 @@
+torch==2.5.1
+torch_geometric==2.7.0
+rdkit==2025.9.6
+scikit-learn==1.7.2
+numpy
+matplotlib
+pandas

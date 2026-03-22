@@ -1,0 +1,4 @@
+data/
+bace_best_seed123.pt bace_best_seed42.pt bace_best_seed7.pt best_model.pt best_model_seed123.pt best_model_seed42.pt best_model_seed7.pt esol_best_seed123.pt esol_best_seed42.pt esol_best_seed7.pt mt_w0.5_1.0_seed123.pt mt_w0.5_1.0_seed42.pt mt_w0.5_1.0_seed7.pt mt_w1.0_1.0_seed123.pt mt_w1.0_1.0_seed42.pt mt_w1.0_1.0_seed7.pt mt_w1.0_2.0_seed123.pt mt_w1.0_2.0_seed42.pt mt_w1.0_2.0_seed7.pt multitask_best_seed123.pt multitask_best_seed42.pt multitask_best_seed7.pt
+__pycache__/
+.ipynb_checkpoints/
