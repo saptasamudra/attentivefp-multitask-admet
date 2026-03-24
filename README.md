@@ -1,6 +1,6 @@
 # Multi-task AttentiveFP for ADMET Molecular Property Prediction
 
-> A shared graph neural network that jointly predicts multiple drug-related molecular properties, trained and evaluated on MoleculeNet benchmarks with scaffold split.
+> A shared graph neural network that jointly predicts multiple drug-related molecular properties, benchmarked on 7 MoleculeNet datasets with scaffold split.
 
 ## Table of contents
 
@@ -10,14 +10,17 @@
 - [Usage](#usage)
 - [File structure](#file-structure)
 - [Methodology](#methodology)
-- [Next steps](#next-steps)
 - [Acknowledgements](#acknowledgements)
 
 ## About
 
-Predicting molecular properties like solubility, binding affinity, and toxicity is critical in early-stage drug discovery. This project builds a multi-task learning framework on top of [AttentiveFP](https://pubs.acs.org/doi/10.1021/acs.jmedchem.9b00959) (Xiong et al., 2020) — a graph attention network for molecules — to predict multiple ADMET properties simultaneously using a shared encoder with task-specific output heads.
+Predicting molecular properties like solubility, lipophilicity, binding affinity, and toxicity is critical in early-stage drug discovery. This project builds a multi-task learning framework on top of [AttentiveFP](https://pubs.acs.org/doi/10.1021/acs.jmedchem.9b00959) (Xiong et al., 2020) — a graph attention network for molecules — to predict multiple ADMET properties simultaneously using a shared encoder with task-specific output heads.
 
-**Key finding:** Task-weighted multi-task learning improves ESOL solubility prediction by 11.3% over the single-task baseline, surpassing the original AttentiveFP paper. We show that reducing the dominant task's loss weight is more effective than amplifying the weaker task's weight to mitigate negative transfer.
+**Key contributions:**
+- Comprehensive benchmark of AttentiveFP across 7 MoleculeNet datasets (3 regression + 4 classification)
+- Multi-task model with shared encoder and 7 task-specific heads
+- Task-weighted loss to mitigate negative transfer between regression and classification tasks
+- Optuna-based automatic hyperparameter optimization
 
 ## Results
 
@@ -25,14 +28,21 @@ All results use Bemis-Murcko scaffold split and are averaged over 3 random seeds
 
 ### Single-task baselines
 
-| Dataset | Task | Molecules | Metric | Our result | Published baseline |
-|---------|------|-----------|--------|------------|--------------------|
-| ESOL | Solubility (regression) | 1,128 | RMSE ↓ | 0.9848 ± 0.0049 | 0.877 |
-| BACE | BACE-1 inhibition (classification) | 1,513 | AUC ↑ | 0.9558 ± 0.0083 | 0.863 |
-| FreeSolv | Hydration energy (regression) | 642 | RMSE ↓ | *in progress* | 2.082 |
-| BBBP | Blood-brain barrier (classification) | 2,039 | AUC ↑ | *in progress* | 0.862 |
+| Dataset | Molecules | Task | Metric | Our result | Published |
+|---------|-----------|------|--------|------------|-----------|
+| ESOL | 1,128 | Solubility (regression) | RMSE ↓ | 1.0365 ± 0.0544 | 0.877 |
+| FreeSolv | 642 | Hydration energy (regression) | RMSE ↓ | 2.2363 ± 0.0553 | 2.082 |
+| Lipo | 4,200 | Lipophilicity (regression) | RMSE ↓ | 0.6514 ± 0.0016 | 0.655 |
+| BACE | 1,513 | BACE-1 inhibition (classification) | AUC ↑ | 0.8918 ± 0.0125 | 0.863 |
+| BBBP | 2,039 | Blood-brain barrier (classification) | AUC ↑ | 0.6471 ± 0.0991 | 0.862 |
+| ClinTox | 1,478 | Clinical toxicity (classification) | AUC ↑ | 0.8742 ± 0.0067 | 0.832 |
+| Tox21 | 7,831 | Toxicity (classification) | AUC ↑ | 0.7286 ± 0.0113 | 0.829 |
 
-### Multi-task weight ablation (ESOL + BACE)
+### Multi-task results
+
+*In progress — running 7-dataset multi-task model with shared encoder.*
+
+### Task weight ablation (ESOL + BACE, earlier experiments)
 
 | Weights (w_esol, w_bace) | ESOL RMSE ↓ | BACE AUC ↑ |
 |---------------------------|-------------|------------|
@@ -44,20 +54,13 @@ All results use Bemis-Murcko scaffold split and are averaged over 3 random seeds
 ## Installation
 
 ```bash
-# Create and activate environment
 conda create -n molprop python=3.10 -y
 conda activate molprop
-
-# PyTorch with CUDA 12.1
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
-
-# PyTorch Geometric
 pip install torch_geometric
 pip install pyg_lib torch_scatter torch_sparse torch_cluster torch_spline_conv \
     -f https://data.pyg.org/whl/torch-2.5.1+cu121.html
-
-# Other dependencies
-pip install rdkit scikit-learn matplotlib pandas numpy
+pip install rdkit scikit-learn matplotlib pandas numpy optuna
 ```
 
 ## Usage
@@ -65,52 +68,52 @@ pip install rdkit scikit-learn matplotlib pandas numpy
 ```bash
 conda activate molprop
 
-# Run single-task baselines (ESOL + BACE)
-python attentivefp_baseline.py
+# ── Single-task baselines ──
+python moleculenet_baseline.py          # All 7 datasets, 3 seeds each
+python bace_baseline.py                 # Standalone BACE baseline
 
-# Run standalone BACE baseline
-python bace_baseline.py
+# ── Multi-task models ──
+python attentivefp_multitask.py         # 2-dataset (ESOL+BACE) with weight ablation
+python multitask_7dataset.py            # 7-dataset multi-task model
 
-# Run multi-task model with weight ablation
-python attentivefp_multitask.py
+# ── Hyperparameter optimization ──
+python optuna_esol_simple.py            # Optuna on single-task ESOL (learning demo)
+python optuna_multitask.py              # Optuna on multi-task ESOL+BACE
+python optuna_final_eval.py             # Final eval with Optuna-optimized params
 ```
 
 All datasets download automatically from MoleculeNet on first run.
-
-**Expected runtime (GTX 1660 Ti):**
-- Baseline: ~25 min (3 seeds × 2 datasets × 200 epochs)
-- Multi-task: ~35 min (weight search + 3 seeds × 200 epochs)
 
 ## File structure
 
 ```
 molprop_project/
-├── attentivefp_baseline.py     # Single-task baselines (ESOL + BACE)
-├── attentivefp_multitask.py    # Multi-task model with weight ablation
-├── bace_baseline.py            # Standalone BACE classification baseline
-├── molprop.ipynb               # Attention weight visualizations
-├── attention_maps.png          # Figure: gradient-based atom importance
-├── requirements.txt            # Python dependencies
+├── moleculenet_baseline.py        # 7-dataset single-task baselines
+├── multitask_7dataset.py          # 7-dataset multi-task model (main contribution)
+├── attentivefp_baseline.py        # Original 2-dataset baselines (ESOL+BACE)
+├── attentivefp_multitask.py       # 2-dataset multi-task with weight ablation
+├── bace_baseline.py               # Standalone BACE classification baseline
+├── optuna_esol_simple.py          # Optuna tutorial on single-task ESOL
+├── optuna_multitask.py            # Optuna for multi-task hyperparameters
+├── optuna_final_eval.py           # Final evaluation with optimized params
+├── molprop.ipynb                  # Attention weight visualizations
+├── attention_maps.png             # Figure: gradient-based atom importance
+├── requirements.txt
 ├── .gitignore
 └── README.md
 ```
 
 ## Methodology
 
-**Model:** AttentiveFP with 39-dim atom features, 10-dim bond features, 200-dim hidden layer, 2 message passing layers, 2 GRU readout timesteps, and 0.2 dropout.
+**Model:** AttentiveFP with 39-dim atom features (including chirality type), 10-dim bond features, 200-dim hidden layer, 2 message passing layers, 2 GRU readout timesteps, and 0.2 dropout.
 
-**Split:** Bemis-Murcko scaffold split (80/10/10 train/val/test). Scaffold split ensures test molecules have novel core structures not seen during training, providing a realistic evaluation of generalization.
+**Split:** Bemis-Murcko scaffold split (80/10/10). Classification datasets use class-aware seeding to ensure both classes appear in val and test splits.
 
-**Multi-task design:** One shared AttentiveFP encoder with task-specific linear output heads. Combined loss: `L = w_esol × MSE + w_bace × BCE`. Task weights selected on validation set only (seed=42); test set never used for hyperparameter selection.
+**Multi-task design:** One shared AttentiveFP encoder with dataset-specific linear output heads. Regression tasks are downweighted (w=0.5) relative to classification tasks (w=1.0) to prevent gradient domination from MSE loss.
 
-**Reproducibility:** All experiments run across 3 random seeds (42, 123, 7) with mean ± std reported.
+**Datasets:** 7 MoleculeNet benchmarks covering the full ADMET pipeline — solubility (ESOL), hydration energy (FreeSolv), lipophilicity (Lipo), enzyme inhibition (BACE), brain penetration (BBBP), clinical toxicity (ClinTox), and in-vitro toxicity (Tox21).
 
-## Next steps
-
-- [ ] Add FreeSolv and BBBP single-task baselines
-- [ ] Expand multi-task model to 4 datasets
-- [ ] Integrate Optuna for automatic hyperparameter tuning
-- [ ] Update paper draft with expanded results
+**Reproducibility:** All experiments across 3 random seeds (42, 123, 7) with mean ± std reported.
 
 ## Acknowledgements
 
