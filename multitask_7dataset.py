@@ -1,18 +1,18 @@
 """
 Multi-Task AttentiveFP — 7 MoleculeNet Datasets
-One shared encoder, 7 task-specific heads
-Scaffold split | 3 seeds
+One shared encoder, 7 task-specific output heads
+Scaffold split | 3 seeds | Paper default hyperparameters
 
-Datasets:
-  Regression:     ESOL (1), FreeSolv (1), Lipo (1)
-  Classification: BACE (1), BBBP (1), ClinTox (2), Tox21 (12)
+Same bug fixes as moleculenet_baseline.py:
+  - safe_out(), safe_y(), safe_auc()
+  - Additive scaffold split with fallback guarantee
+  - y.view(-1)[0] for multi-task label check
 
 Run:  python multitask_7dataset.py
 Time: ~3-4 hours on GPU
 """
 
 import os.path as osp
-from collections import defaultdict
 from math import sqrt
 
 import numpy as np
@@ -21,483 +21,345 @@ import torch.nn.functional as F
 from rdkit import Chem
 from rdkit.Chem.Scaffolds import MurckoScaffold
 from sklearn.metrics import roc_auc_score
+from torch.nn import Linear, ModuleDict
 
 from torch_geometric.datasets import MoleculeNet
 from torch_geometric.loader import DataLoader
 from torch_geometric.nn.models import AttentiveFP
-from torch.nn import Linear, ModuleDict
-
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f'Using device: {device}')
 
-
-# ─────────────────────────────────────────────
-# CONFIG
-# ─────────────────────────────────────────────
-
 HP = {
-    'lr': 10**-2.5,
-    'hidden_dim': 200,
-    'num_layers': 2,
+    'lr':            10 ** -2.5,
+    'hidden_dim':    200,
+    'num_layers':    2,
     'num_timesteps': 2,
-    'dropout': 0.2,
-    'batch_size': 200,
-    'weight_decay': 1e-5,
+    'dropout':       0.2,
+    'batch_size':    200,
+    'weight_decay':  1e-5,
 }
-
-SEEDS = [42, 123, 7]
+SEEDS  = [42, 123, 7]
 EPOCHS = 200
 
-# Dataset registry: name, task type, number of output tasks, loss weight
 DATASETS = {
-    'ESOL':    {'task': 'regression',     'num_tasks': 1,  'weight': 0.5, 'metric': 'RMSE ↓'},
-    'FreeSolv':{'task': 'regression',     'num_tasks': 1,  'weight': 0.5, 'metric': 'RMSE ↓'},
-    'Lipo':    {'task': 'regression',     'num_tasks': 1,  'weight': 0.5, 'metric': 'RMSE ↓'},
-    'BACE':    {'task': 'classification', 'num_tasks': 1,  'weight': 1.0, 'metric': 'AUC ↑'},
-    'BBBP':    {'task': 'classification', 'num_tasks': 1,  'weight': 1.0, 'metric': 'AUC ↑'},
-    'ClinTox': {'task': 'classification', 'num_tasks': 2,  'weight': 1.0, 'metric': 'AUC ↑'},
-    'Tox21':   {'task': 'classification', 'num_tasks': 12, 'weight': 1.0, 'metric': 'AUC ↑'},
+    'ESOL':     {'task': 'regression',     'num_tasks': 1,  'weight': 0.5},
+    'FreeSolv': {'task': 'regression',     'num_tasks': 1,  'weight': 0.5},
+    'Lipo':     {'task': 'regression',     'num_tasks': 1,  'weight': 0.5},
+    'BACE':     {'task': 'classification', 'num_tasks': 1,  'weight': 1.0},
+    'BBBP':     {'task': 'classification', 'num_tasks': 1,  'weight': 1.0},
+    'ClinTox':  {'task': 'classification', 'num_tasks': 2,  'weight': 1.0},
+    'Tox21':    {'task': 'classification', 'num_tasks': 12, 'weight': 1.0},
 }
 
+ST_BASELINES = {
+    'ESOL': 1.0272, 'FreeSolv': 2.1699, 'Lipo': 0.6532,
+    'BACE': 0.8940, 'BBBP': 0.6471, 'ClinTox': 0.8677, 'Tox21': 0.7620,
+}
 
-# ─────────────────────────────────────────────
-# FEATURE ENGINEERING (official PyG version)
-# ─────────────────────────────────────────────
+base_path = '.'
 
+
+# ── Feature engineering ───────────────────────────────────────────
 class GenFeatures:
     def __init__(self):
         self.symbols = [
-            'B', 'C', 'N', 'O', 'F', 'Si', 'P', 'S', 'Cl', 'As', 'Se', 'Br',
-            'Te', 'I', 'At', 'other'
+            'B','C','N','O','F','Si','P','S','Cl','As','Se','Br','Te','I','At','other',
         ]
         self.hybridizations = [
-            Chem.rdchem.HybridizationType.SP,
-            Chem.rdchem.HybridizationType.SP2,
-            Chem.rdchem.HybridizationType.SP3,
-            Chem.rdchem.HybridizationType.SP3D,
-            Chem.rdchem.HybridizationType.SP3D2,
-            'other',
+            Chem.rdchem.HybridizationType.SP, Chem.rdchem.HybridizationType.SP2,
+            Chem.rdchem.HybridizationType.SP3, Chem.rdchem.HybridizationType.SP3D,
+            Chem.rdchem.HybridizationType.SP3D2, 'other',
         ]
         self.stereos = [
-            Chem.rdchem.BondStereo.STEREONONE,
-            Chem.rdchem.BondStereo.STEREOANY,
-            Chem.rdchem.BondStereo.STEREOZ,
-            Chem.rdchem.BondStereo.STEREOE,
+            Chem.rdchem.BondStereo.STEREONONE, Chem.rdchem.BondStereo.STEREOANY,
+            Chem.rdchem.BondStereo.STEREOZ,    Chem.rdchem.BondStereo.STEREOE,
         ]
 
     def __call__(self, data):
         mol = Chem.MolFromSmiles(data.smiles)
-        if mol is None:
-            data.x = torch.zeros((1, 39), dtype=torch.float)
-            data.edge_index = torch.zeros((2, 0), dtype=torch.long)
-            data.edge_attr = torch.zeros((0, 10), dtype=torch.float)
-            return data
-
         xs = []
         for atom in mol.GetAtoms():
             symbol = [0.] * len(self.symbols)
-            symbol[self.symbols.index(atom.GetSymbol())
-                   if atom.GetSymbol() in self.symbols else -1] = 1.
+            sym = atom.GetSymbol()
+            symbol[self.symbols.index(sym) if sym in self.symbols else -1] = 1.
             degree = [0.] * 6
             degree[min(atom.GetDegree(), 5)] = 1.
-            formal_charge = atom.GetFormalCharge()
-            radical_electrons = atom.GetNumRadicalElectrons()
-            hybridization = [0.] * len(self.hybridizations)
-            hybridization[self.hybridizations.index(
-                atom.GetHybridization())
-                if atom.GetHybridization() in self.hybridizations else -1] = 1.
-            aromaticity = 1. if atom.GetIsAromatic() else 0.
+            hyb_list = [0.] * len(self.hybridizations)
+            hyb = atom.GetHybridization()
+            hyb_list[self.hybridizations.index(hyb) if hyb in self.hybridizations else -1] = 1.
             hydrogens = [0.] * 5
             hydrogens[min(atom.GetTotalNumHs(), 4)] = 1.
-            chirality = 1. if atom.HasProp('_ChiralityPossible') else 0.
             chirality_type = [0.] * 2
             if atom.HasProp('_CIPCode'):
-                chirality_type[['R', 'S'].index(atom.GetProp('_CIPCode'))] = 1.
+                cip = atom.GetProp('_CIPCode')
+                if cip in ('R', 'S'):
+                    chirality_type[['R', 'S'].index(cip)] = 1.
+            xs.append(symbol + degree +
+                      [float(atom.GetFormalCharge()), float(atom.GetNumRadicalElectrons())] +
+                      hyb_list + [1. if atom.GetIsAromatic() else 0.] + hydrogens +
+                      [1. if atom.HasProp('_ChiralityPossible') else 0.] + chirality_type)
 
-            x = torch.tensor(symbol + degree + [formal_charge] +
-                             [radical_electrons] + hybridization +
-                             [aromaticity] + hydrogens + [chirality] +
-                             chirality_type)
-            xs.append(x)
+        data.x = torch.tensor(xs, dtype=torch.float)
 
-        data.x = torch.stack(xs, dim=0)
-
-        edge_indices = []
         edge_attrs = []
         for bond in mol.GetBonds():
-            edge_indices += [[bond.GetBeginAtomIdx(), bond.GetEndAtomIdx()]]
-            edge_indices += [[bond.GetEndAtomIdx(), bond.GetBeginAtomIdx()]]
-
-            bond_type = bond.GetBondType()
-            single = 1. if bond_type == Chem.rdchem.BondType.SINGLE else 0.
-            double = 1. if bond_type == Chem.rdchem.BondType.DOUBLE else 0.
-            triple = 1. if bond_type == Chem.rdchem.BondType.TRIPLE else 0.
-            aromatic = 1. if bond_type == Chem.rdchem.BondType.AROMATIC else 0.
-            conjugation = 1. if bond.GetIsConjugated() else 0.
-            ring = 1. if bond.IsInRing() else 0.
+            bt = bond.GetBondTypeAsDouble()
+            bond_type_onehot = [
+                1. if bt == 1.0 else 0.,
+                1. if bt == 2.0 else 0.,
+                1. if bt == 3.0 else 0.,
+                1. if bt == 1.5 else 0.,
+            ]
             stereo = [0.] * 4
-            stereo[self.stereos.index(bond.GetStereo())] = 1.
+            s = bond.GetStereo()
+            if s in self.stereos:
+                stereo[self.stereos.index(s)] = 1.
+            is_conjugated = 1. if bond.GetIsConjugated() else 0.
+            is_in_ring    = 1. if bond.IsInRing()        else 0.
+            # Total: 4 + 4 + 1 + 1 = 10 dims exactly
+            attr = bond_type_onehot + stereo + [is_conjugated, is_in_ring]
+            edge_attrs += [attr, attr]
 
-            edge_attr = torch.tensor(
-                [single, double, triple, aromatic, conjugation, ring] + stereo)
-            edge_attrs += [edge_attr, edge_attr]
-
-        if len(edge_attrs) == 0:
-            data.edge_index = torch.zeros((2, 0), dtype=torch.long)
-            data.edge_attr = torch.zeros((0, 10), dtype=torch.float)
-        else:
-            data.edge_index = torch.tensor(edge_indices).t().contiguous()
-            data.edge_attr = torch.stack(edge_attrs, dim=0)
-
+        data.edge_attr = (torch.zeros((0, 10), dtype=torch.float) if not edge_attrs
+                          else torch.tensor(edge_attrs, dtype=torch.float))
         return data
 
 
-# ─────────────────────────────────────────────
-# SCAFFOLD SPLIT
-# ─────────────────────────────────────────────
+# ── Shape helpers (same as baseline) ─────────────────────────────
+def safe_out(out):
+    return out.unsqueeze(-1) if out.dim() == 1 else out
 
-def scaffold_split(dataset, train_frac=0.8, val_frac=0.1, classification=False):
-    scaffolds = defaultdict(list)
+def safe_y(y, num_tasks):
+    y = y.float()
+    if y.dim() == 1:
+        y = y.unsqueeze(-1)
+    return y
+
+def safe_auc(labels, preds):
+    if len(np.unique(labels)) < 2:
+        return None
+    return float(roc_auc_score(labels, preds))
+
+
+# ── Scaffold split (standard DeepChem/Chemprop implementation) ───
+def scaffold_split(dataset, seed, task='regression', frac_train=0.8, frac_val=0.1):
+    scaffold_to_idx = {}
     for i, data in enumerate(dataset):
         mol = Chem.MolFromSmiles(data.smiles)
-        if mol is None:
-            scaffolds['unknown'].append(i)
-            continue
-        scaffold = MurckoScaffold.MurckoScaffoldSmiles(
-            mol=mol, includeChirality=False)
-        scaffolds[scaffold].append(i)
+        scaffold = ('' if mol is None else
+                    MurckoScaffold.MurckoScaffoldSmiles(mol=mol, includeChirality=False))
+        scaffold_to_idx.setdefault(scaffold, []).append(i)
 
-    scaffold_groups = sorted(scaffolds.values(), key=len, reverse=True)
+    rng = np.random.RandomState(seed)
+    scaffold_sets = list(scaffold_to_idx.values())
+    rng.shuffle(scaffold_sets)
+    scaffold_sets = sorted(scaffold_sets, key=lambda x: len(x), reverse=True)
+
     n = len(dataset)
-    n_train = int(n * train_frac)
-    n_val = int(n * val_frac)
+    train_cutoff = int(frac_train * n)
+    val_cutoff   = int((frac_train + frac_val) * n)
+
     train_idx, val_idx, test_idx = [], [], []
+    for sset in scaffold_sets:
+        if   len(train_idx) + len(sset) <= train_cutoff:               train_idx.extend(sset)
+        elif len(val_idx)   + len(sset) <= (val_cutoff - train_cutoff): val_idx.extend(sset)
+        else:                                                            test_idx.extend(sset)
 
-    if classification:
-        labels = []
-        for data in dataset:
-            y = data.y
-            if y.dim() > 1:
-                y = y[:, 0]
-            val = y.item() if y.numel() == 1 else y[0].item()
-            if np.isnan(val):
-                labels.append(0)
-            else:
-                labels.append(int(val))
-        labels = np.array(labels)
+    if not test_idx:
+        cut = max(1, int(len(train_idx) * 0.9))
+        test_idx, train_idx = train_idx[cut:], train_idx[:cut]
+    if not val_idx:
+        cut = max(1, int(len(train_idx) * 0.9))
+        val_idx, train_idx = train_idx[cut:], train_idx[:cut]
 
-        pos_scaffolds = [g for g in scaffold_groups if all(labels[i] == 1 for i in g)]
-        neg_scaffolds = [g for g in scaffold_groups if all(labels[i] == 0 for i in g)]
-
-        seeded = set()
-        if pos_scaffolds and neg_scaffolds:
-            val_idx.extend(pos_scaffolds[-1]); seeded.add(id(pos_scaffolds[-1]))
-            val_idx.extend(neg_scaffolds[-1]); seeded.add(id(neg_scaffolds[-1]))
-            if len(pos_scaffolds) > 1 and len(neg_scaffolds) > 1:
-                test_idx.extend(pos_scaffolds[-2]); seeded.add(id(pos_scaffolds[-2]))
-                test_idx.extend(neg_scaffolds[-2]); seeded.add(id(neg_scaffolds[-2]))
-
-        for group in scaffold_groups:
-            if id(group) in seeded:
-                continue
-            if len(train_idx) < n_train:
-                train_idx.extend(group)
-            elif len(val_idx) < n_val:
-                val_idx.extend(group)
-            else:
-                test_idx.extend(group)
-    else:
-        for group in scaffold_groups:
-            if len(train_idx) < n_train:
-                train_idx.extend(group)
-            elif len(val_idx) < n_val:
-                val_idx.extend(group)
-            else:
-                test_idx.extend(group)
-
-    return (dataset[torch.tensor(train_idx)],
-            dataset[torch.tensor(val_idx)],
-            dataset[torch.tensor(test_idx)])
+    return (dataset[torch.tensor(train_idx, dtype=torch.long)],
+            dataset[torch.tensor(val_idx,   dtype=torch.long)],
+            dataset[torch.tensor(test_idx,  dtype=torch.long)])
 
 
-# ─────────────────────────────────────────────
-# MULTI-TASK MODEL — 7 HEADS
-# ─────────────────────────────────────────────
-
-class AttentiveFPMultiTask7(torch.nn.Module):
-    """
-    Shared AttentiveFP encoder + 7 dataset-specific output heads.
-    """
-    def __init__(self, hp, dataset_info):
+# ── Multi-task model ──────────────────────────────────────────────
+class AttentiveFPMultiTask(torch.nn.Module):
+    def __init__(self, hidden_dim, num_layers, num_timesteps, dropout, dataset_configs):
         super().__init__()
-        h = hp['hidden_dim']
         self.encoder = AttentiveFP(
-            in_channels=39,
-            hidden_channels=h,
-            out_channels=h,
-            edge_dim=10,
-            num_layers=hp['num_layers'],
-            num_timesteps=hp['num_timesteps'],
-            dropout=hp['dropout'],
+            in_channels=39, hidden_channels=hidden_dim, out_channels=hidden_dim,
+            edge_dim=10, num_layers=num_layers, num_timesteps=num_timesteps, dropout=dropout,
         )
-        # One head per dataset
-        self.heads = ModuleDict()
-        for name, info in dataset_info.items():
-            self.heads[name] = Linear(h, info['num_tasks'])
+        self.heads = ModuleDict({
+            name: Linear(hidden_dim, info['num_tasks'])
+            for name, info in dataset_configs.items()
+        })
 
-    def forward(self, x, edge_index, edge_attr, batch):
-        return self.encoder(x, edge_index, edge_attr, batch)
-
-    def predict(self, h, dataset_name):
+    def forward(self, x, edge_index, edge_attr, batch, dataset_name):
+        h = self.encoder(x, edge_index, edge_attr, batch)
         return self.heads[dataset_name](h)
 
 
-# ─────────────────────────────────────────────
-# LOAD ALL DATASETS
-# ─────────────────────────────────────────────
-
-def load_all_datasets():
-    base_path = osp.dirname(osp.abspath(__file__))
-    featurizer = GenFeatures()
-    all_data = {}
-
+# ── Load all datasets ─────────────────────────────────────────────
+def load_all_datasets(seed):
+    loaded = {}
     for name, info in DATASETS.items():
-        print(f'  Loading {name}...')
-        path = osp.join(base_path, 'data', name)
-        dataset = MoleculeNet(path, name=name, pre_transform=featurizer)
-        is_clf = info['task'] == 'classification'
-        train_set, val_set, test_set = scaffold_split(
-            dataset, classification=is_clf)
-
-        all_data[name] = {
-            'train': train_set,
-            'val': val_set,
-            'test': test_set,
-            'info': info,
+        dataset = MoleculeNet(osp.join(base_path, 'data', name),
+                              name=name, pre_transform=GenFeatures())
+        train_ds, val_ds, test_ds = scaffold_split(dataset, seed, task=info['task'])
+        loaded[name] = {
+            'train': DataLoader(train_ds, batch_size=HP['batch_size'], shuffle=True),
+            'val':   DataLoader(val_ds,   batch_size=HP['batch_size']),
+            'test':  DataLoader(test_ds,  batch_size=HP['batch_size']),
+            **info,
         }
-        print(f'    {name}: train={len(train_set)} | val={len(val_set)} | test={len(test_set)}')
+        print(f'  {name}: train={len(train_ds)} val={len(val_ds)} test={len(test_ds)}')
+    return loaded
 
-    return all_data
 
-
-# ─────────────────────────────────────────────
-# EVALUATION HELPERS
-# ─────────────────────────────────────────────
-
-def eval_regression(model, loader, dataset_name):
+# ── Evaluate one dataset ──────────────────────────────────────────
+@torch.no_grad()
+def evaluate(model, loader, dataset_name, task, num_tasks):
     model.eval()
-    errors = []
-    with torch.no_grad():
+    if task == 'regression':
+        preds, labels = [], []
         for batch in loader:
             batch = batch.to(device)
-            h = model(batch.x, batch.edge_index, batch.edge_attr, batch.batch)
-            pred = model.predict(h, dataset_name)
-            y = batch.y
-            if y.dim() > 1:
-                y = y[:, 0]
-            mask = ~torch.isnan(y)
-            if mask.sum() > 0:
-                errors.append((pred[mask].squeeze(-1) - y[mask]).cpu())
-    if not errors:
-        return float('inf')
-    return sqrt(torch.cat(errors).pow(2).mean().item())
-
-
-def eval_classification(model, loader, dataset_name, num_tasks):
-    model.eval()
-    all_preds = [[] for _ in range(num_tasks)]
-    all_labels = [[] for _ in range(num_tasks)]
-
-    with torch.no_grad():
+            out = safe_out(model(batch.x, batch.edge_index, batch.edge_attr,
+                                 batch.batch, dataset_name))
+            y   = safe_y(batch.y, 1)
+            mask = ~torch.isnan(y[:, 0])
+            if mask.sum() == 0: continue
+            preds.append(out[mask, 0].cpu()); labels.append(y[mask, 0].cpu())
+        if not preds: return float('inf')
+        return sqrt(F.mse_loss(torch.cat(preds), torch.cat(labels)).item())
+    else:
+        tp = [[] for _ in range(num_tasks)]
+        tl = [[] for _ in range(num_tasks)]
         for batch in loader:
             batch = batch.to(device)
-            h = model(batch.x, batch.edge_index, batch.edge_attr, batch.batch)
-            pred = torch.sigmoid(model.predict(h, dataset_name)).cpu().numpy()
-            y = batch.y.float()
-            if y.dim() == 1:
-                y = y.unsqueeze(-1)
-            y = y.cpu().numpy()
-
+            out = safe_out(model(batch.x, batch.edge_index, batch.edge_attr,
+                                 batch.batch, dataset_name))
+            y   = safe_y(batch.y, num_tasks)
             for t in range(num_tasks):
-                mask = ~np.isnan(y[:, t])
-                if mask.sum() > 0:
-                    all_preds[t].append(pred[mask, t] if num_tasks > 1 else pred[mask].squeeze())
-                    all_labels[t].append(y[mask, t])
-
-    aucs = []
-    for t in range(num_tasks):
-        if not all_preds[t]:
-            continue
-        p = np.concatenate(all_preds[t])
-        l = np.concatenate(all_labels[t])
-        if len(np.unique(l)) >= 2:
-            aucs.append(roc_auc_score(l, p))
-    return np.mean(aucs) if aucs else 0.5
+                mask = ~torch.isnan(y[:, t])
+                if mask.sum() == 0: continue
+                tp[t].append(torch.sigmoid(out[mask, t]).cpu().numpy())
+                tl[t].append(y[mask, t].cpu().numpy())
+        aucs = []
+        for t in range(num_tasks):
+            if tp[t]:
+                auc = safe_auc(np.concatenate(tl[t]), np.concatenate(tp[t]))
+                if auc is not None: aucs.append(auc)
+        return np.mean(aucs) if aucs else 0.5
 
 
-# ─────────────────────────────────────────────
-# RUN ONE SEED
-# ─────────────────────────────────────────────
+# ── Train one seed ────────────────────────────────────────────────
+def run_seed(seed):
+    print(f'\n{"─" * 50}\n  Seed {seed} — loading datasets...\n{"─" * 50}')
+    torch.manual_seed(seed); np.random.seed(seed)
 
-def run_multitask(seed, all_data):
-    print(f'\n{"="*60}')
-    print(f'  Multi-task 7-dataset | Seed {seed}')
-    print(f'{"="*60}')
+    loaders  = load_all_datasets(seed)
+    ds_names = list(DATASETS.keys())
 
-    torch.manual_seed(seed)
-    np.random.seed(seed)
-    if torch.cuda.is_available():
-        torch.cuda.manual_seed_all(seed)
+    model = AttentiveFPMultiTask(
+        hidden_dim=HP['hidden_dim'], num_layers=HP['num_layers'],
+        num_timesteps=HP['num_timesteps'], dropout=HP['dropout'],
+        dataset_configs=DATASETS,
+    ).to(device)
 
-    # Create data loaders
-    loaders = {}
-    for name, data in all_data.items():
-        loaders[name] = {
-            'train': DataLoader(list(data['train']),
-                                batch_size=HP['batch_size'], shuffle=True),
-            'val': DataLoader(list(data['val']),
-                              batch_size=HP['batch_size']),
-            'test': DataLoader(list(data['test']),
-                               batch_size=HP['batch_size']),
-        }
-
-    # Build model
-    model = AttentiveFPMultiTask7(HP, DATASETS).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=HP['lr'],
                                  weight_decay=HP['weight_decay'])
 
-    best_val_score = float('-inf')
-    best_results = {}
+    best_val  = {n: float('inf')  if DATASETS[n]['task'] == 'regression' else -float('inf')
+                 for n in ds_names}
+    best_test = {n: float('inf')  if DATASETS[n]['task'] == 'regression' else -float('inf')
+                 for n in ds_names}
 
     for epoch in range(1, EPOCHS + 1):
         model.train()
-
-        # Train on each dataset sequentially
-        for name, info in DATASETS.items():
-            w = info['weight']
-            for batch in loaders[name]['train']:
+        for name in ds_names:
+            info     = loaders[name]
+            task     = info['task']
+            n_tasks  = info['num_tasks']
+            weight   = info['weight']
+            for batch in info['train']:
                 batch = batch.to(device)
                 optimizer.zero_grad()
-
-                h = model(batch.x, batch.edge_index, batch.edge_attr, batch.batch)
-                pred = model.predict(h, name)
-
-                if info['task'] == 'regression':
-                    y = batch.y
-                    if y.dim() > 1:
-                        y = y[:, 0]
-                    mask = ~torch.isnan(y)
-                    if mask.sum() == 0:
-                        continue
-                    loss = w * F.mse_loss(pred[mask].squeeze(-1), y[mask])
+                out  = safe_out(model(batch.x, batch.edge_index, batch.edge_attr,
+                                      batch.batch, name))
+                y    = safe_y(batch.y, n_tasks)
+                if task == 'regression':
+                    mask = ~torch.isnan(y[:, 0])
+                    if mask.sum() == 0: continue
+                    loss = weight * F.mse_loss(out[mask, 0], y[mask, 0])
                 else:
-                    y = batch.y.float()
-                    if y.dim() == 1:
-                        y = y.unsqueeze(-1)
                     mask = ~torch.isnan(y)
-                    if mask.sum() == 0:
-                        continue
-                    loss = w * F.binary_cross_entropy_with_logits(pred[mask], y[mask])
-
+                    if mask.sum() == 0: continue
+                    loss = weight * F.binary_cross_entropy_with_logits(out[mask], y[mask])
                 loss.backward()
                 optimizer.step()
 
-        # Evaluate every 20 epochs
-        if epoch % 20 == 0 or epoch == EPOCHS:
-            results = {}
-            val_score = 0.0
+        if epoch % 10 == 0 or epoch == EPOCHS:
+            summary = []
+            for name in ds_names:
+                info    = loaders[name]
+                task    = info['task']
+                n_tasks = info['num_tasks']
 
-            for name, info in DATASETS.items():
-                if info['task'] == 'regression':
-                    val_metric = eval_regression(model, loaders[name]['val'], name)
-                    test_metric = eval_regression(model, loaders[name]['test'], name)
-                    # For combined score: negate RMSE (lower is better)
-                    val_score -= val_metric
-                else:
-                    nt = info['num_tasks']
-                    val_metric = eval_classification(model, loaders[name]['val'], name, nt)
-                    test_metric = eval_classification(model, loaders[name]['test'], name, nt)
-                    # For combined score: add AUC (higher is better)
-                    val_score += val_metric
+                val_score  = evaluate(model, info['val'],  name, task, n_tasks)
+                test_score = evaluate(model, info['test'], name, task, n_tasks)
 
-                results[name] = {'val': val_metric, 'test': test_metric}
+                improved = (val_score < best_val[name] if task == 'regression'
+                            else val_score > best_val[name])
+                if improved:
+                    best_val[name]  = val_score
+                    best_test[name] = test_score
 
-            if val_score > best_val_score:
-                best_val_score = val_score
-                best_results = {k: v['test'] for k, v in results.items()}
+                summary.append(f'{name}={best_test[name]:.4f}')
 
-            if epoch % 50 == 0:
-                print(f'\n    Epoch {epoch:03d}:')
-                for name in DATASETS:
-                    print(f'      {name:<10} Val: {results[name]["val"]:.4f} | '
-                          f'Test: {results[name]["test"]:.4f}')
+            if epoch % 50 == 0 or epoch == EPOCHS:
+                print(f'  Epoch {epoch:03d} | ' + ' | '.join(summary))
 
-    print(f'\n    Seed {seed} DONE — Best test results:')
-    for name, val in best_results.items():
-        print(f'      {name:<10} {val:.4f}')
-
-    return best_results
+    return best_test
 
 
-# ═════════════════════════════════════════════
-# MAIN
-# ═════════════════════════════════════════════
-
+# ── Main ──────────────────────────────────────────────────────────
 if __name__ == '__main__':
     print('\n' + '█' * 60)
     print('  Multi-Task AttentiveFP — 7 MoleculeNet Datasets')
-    print('  Shared encoder + 7 heads | Scaffold Split | 3 Seeds')
+    print('  Shared Encoder | 7 Heads | Scaffold Split | 3 Seeds')
+    print('  Regression weight=0.5 | Classification weight=1.0')
     print('█' * 60)
 
-    # Load all datasets once
-    print('\nLoading datasets...')
-    all_data = load_all_datasets()
-
-    # Run 3 seeds
     all_seed_results = []
     for seed in SEEDS:
-        results = run_multitask(seed, all_data)
-        all_seed_results.append(results)
+        result = run_seed(seed)
+        all_seed_results.append(result)
+        print(f'\n  Seed {seed} results:')
+        for name, val in result.items():
+            print(f'    {name:<14} {val:.4f}')
 
-    # ── Final Summary ──
-    print('\n\n' + '=' * 75)
-    print('  MULTI-TASK RESULTS — 7 datasets — scaffold split — 3 seeds')
-    print('=' * 75)
-    print(f'  {"Dataset":<12} {"Task":<16} {"MT Result":<22} '
-          f'{"ST Baseline":<22} {"Improved?":<10}')
-    print(f'  {"-"*70}')
-
-    # Single-task baselines from last night's run
-    st_baselines = {
-        'ESOL': 1.0365, 'FreeSolv': 2.2363, 'Lipo': 0.6514,
-        'BACE': 0.8918, 'BBBP': 0.6471, 'ClinTox': 0.8742, 'Tox21': 0.7286,
-    }
+    print('\n\n' + '=' * 80)
+    print('  MULTI-TASK RESULTS vs SINGLE-TASK BASELINES')
+    print('=' * 80)
+    print(f'  {"Dataset":<14} {"Task":<16} {"Multi-Task":<24} {"Single-Task":<22} {"Δ"}')
+    print(f'  {"-" * 75}')
 
     for name, info in DATASETS.items():
         values = [r[name] for r in all_seed_results]
-        mean = np.mean(values)
-        std = np.std(values)
-        st = st_baselines[name]
-
+        mean, std = np.mean(values), np.std(values)
+        st = ST_BASELINES[name]
         if info['task'] == 'regression':
-            improved = '✓' if mean < st else '✗'
+            delta = st - mean; sign = '✓ improved' if delta > 0 else '✗ worse'
         else:
-            improved = '✓' if mean > st else '✗'
+            delta = mean - st; sign = '✓ improved' if delta > 0 else '✗ worse'
+        print(f'  {name:<14} {info["task"]:<16} {mean:.4f} ± {std:.4f}         '
+              f'{st:<22.4f} {delta:+.4f} {sign}')
 
-        result_str = f'{mean:.4f} ± {std:.4f}'
-        print(f'  {name:<12} {info["task"]:<16} {result_str:<22} '
-              f'{st:<22.4f} {improved:<10}')
+    print('=' * 80)
 
-    print('=' * 75)
-
-    print(f'\n  Task weights used:')
-    for name, info in DATASETS.items():
-        print(f'    {name}: {info["weight"]}')
-
-    print(f'\n  Seed breakdown:')
+    print('\n  Seed breakdown:')
     for name in DATASETS:
-        vals = [f'{r[name]:.4f}' for r in all_seed_results]
-        print(f'    {name:<12} {" | ".join(f"Seed {s}: {v}" for s, v in zip(SEEDS, vals))}')
+        vals = ' | '.join(f'Seed {s}: {r[name]:.4f}'
+                          for s, r in zip(SEEDS, all_seed_results))
+        print(f'    {name:<14} {vals}')
 
-    print(f'\n  Next: tune task weights with Optuna to improve weak datasets.')
+    print('\n  Task weights: regression=0.5, classification=1.0')
+    print('\n  Done. Insert these results into Table 3 of paper_v2.docx')

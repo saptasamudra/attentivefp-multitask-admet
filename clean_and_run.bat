@@ -1,0 +1,6 @@
+@echo off
+echo Deleting HIV and SIDER cache...
+if exist "data\HIV" rmdir /s /q "data\HIV"
+if exist "data\SIDER" rmdir /s /q "data\SIDER"
+echo Cache cleared. Starting training...
+python attentivefp_moe.py

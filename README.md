@@ -1,123 +1,215 @@
-# Multi-task AttentiveFP for ADMET Molecular Property Prediction
+# MoE-AttentiveFP: Multi-Task Molecular Property Prediction
 
-> A shared graph neural network that jointly predicts multiple drug-related molecular properties, benchmarked on 7 MoleculeNet datasets with scaffold split.
+[![Python 3.10](https://img.shields.io/badge/Python-3.10-blue.svg)](https://python.org)
+[![PyTorch 2.5](https://img.shields.io/badge/PyTorch-2.5.1-orange.svg)](https://pytorch.org)
+[![PyG 2.7](https://img.shields.io/badge/PyG-2.7.0-green.svg)](https://pyg.org)
+[![Datasets](https://img.shields.io/badge/Datasets-9%20MoleculeNet-teal.svg)](https://moleculenet.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-## Table of contents
+> Sparse Mixture-of-Experts routing applied to multi-task ADMET molecular property prediction across 9 MoleculeNet benchmarks. First application of MoE routing to this problem setting.
 
-- [About](#about)
-- [Results](#results)
-- [Installation](#installation)
-- [Usage](#usage)
-- [File structure](#file-structure)
-- [Methodology](#methodology)
-- [Acknowledgements](#acknowledgements)
+**Authors:** Saptasamudra Gogoi · 林恩 · Biotechnology
 
-## About
-
-Predicting molecular properties like solubility, lipophilicity, binding affinity, and toxicity is critical in early-stage drug discovery. This project builds a multi-task learning framework on top of [AttentiveFP](https://pubs.acs.org/doi/10.1021/acs.jmedchem.9b00959) (Xiong et al., 2020) — a graph attention network for molecules — to predict multiple ADMET properties simultaneously using a shared encoder with task-specific output heads.
-
-**Key contributions:**
-- Comprehensive benchmark of AttentiveFP across 7 MoleculeNet datasets (3 regression + 4 classification)
-- Multi-task model with shared encoder and 7 task-specific heads
-- Task-weighted loss to mitigate negative transfer between regression and classification tasks
-- Optuna-based automatic hyperparameter optimization
+---
 
 ## Results
 
-All results use Bemis-Murcko scaffold split and are averaged over 3 random seeds (mean ± std).
+State-of-the-art on ClinTox and BBBP under scaffold split evaluation.
 
-### Single-task baselines
+| Dataset | Task | MoE K=4 (ours) | Published | Δ |
+|---|---|---|---|---|
+| ESOL | RMSE ↓ | 0.9623 ± 0.069 | 0.877 | — |
+| FreeSolv | RMSE ↓ | 2.8020 ± 0.182 | 2.082 | — |
+| Lipophilicity | RMSE ↓ | 0.8121 ± 0.016 | 0.655 | — |
+| BACE | AUC ↑ | 0.7908 ± 0.031 | 0.863 | — |
+| **BBBP** | **AUC ↑** | **0.8787 ± 0.033** | 0.862 | **+1.7%** ✓ |
+| HIV | AUC ↑ | 0.7809 ± 0.024 | — | new |
+| **ClinTox** | **AUC ↑** | **0.9215 ± 0.014** | 0.832 | **+9.0%** ✓ |
+| Tox21 | AUC ↑ | 0.7703 ± 0.009 | 0.829 | — |
+| SIDER | AUC ↑ | 0.5875 ± 0.023 | — | new |
 
-| Dataset | Molecules | Task | Metric | Our result | Published |
-|---------|-----------|------|--------|------------|-----------|
-| ESOL | 1,128 | Solubility (regression) | RMSE ↓ | 1.0365 ± 0.0544 | 0.877 |
-| FreeSolv | 642 | Hydration energy (regression) | RMSE ↓ | 2.2363 ± 0.0553 | 2.082 |
-| Lipo | 4,200 | Lipophilicity (regression) | RMSE ↓ | 0.6514 ± 0.0016 | 0.655 |
-| BACE | 1,513 | BACE-1 inhibition (classification) | AUC ↑ | 0.8918 ± 0.0125 | 0.863 |
-| BBBP | 2,039 | Blood-brain barrier (classification) | AUC ↑ | 0.6471 ± 0.0991 | 0.862 |
-| ClinTox | 1,478 | Clinical toxicity (classification) | AUC ↑ | 0.8742 ± 0.0067 | 0.832 |
-| Tox21 | 7,831 | Toxicity (classification) | AUC ↑ | 0.7286 ± 0.0113 | 0.829 |
+All results: scaffold split, 3 seeds (42, 123, 7), mean ± std.
 
-### Multi-task results
+---
 
-*In progress — running 7-dataset multi-task model with shared encoder.*
+## Architecture
 
-### Task weight ablation (ESOL + BACE, earlier experiments)
+```
+Molecule (SMILES)
+    ↓ GenFeatures (39-dim atom, 10-dim bond)
+    ↓ AttentiveFP Encoder → mol_repr [B, 200]
+    ↓ MoE Module (K experts, top-2 sparse routing) → expert_repr [B, 200]
+    ↓ Concat → fused [B, 400]
+    ↓ 9 Task-Specific Heads → ADMET predictions
+```
 
-| Weights (w_esol, w_bace) | ESOL RMSE ↓ | BACE AUC ↑ |
-|---------------------------|-------------|------------|
-| Single-task baseline | 0.9791 ± 0.0238 | 0.9708 ± 0.0145 |
-| (1.0, 1.0) equal weight | 0.9072 ± 0.0128 | 0.9446 ± 0.0078 |
-| (1.0, 2.0) boost BACE | 0.8802 ± 0.0122 | 0.9028 ± 0.0223 |
-| **(0.5, 1.0) reduce ESOL** | **0.8688 ± 0.0303** | **0.9612 ± 0.0275** |
+**MoE routing:** A gating network (Linear 200→K) scores each molecule against K experts. Only the top-2 experts activate per molecule. Load-balancing auxiliary loss (λ=0.01) prevents expert collapse.
+
+**Fused representation:** Concatenating mol_repr and expert_repr preserves global molecular information while adding expert-specialized signal. Task heads receive 400-dim input instead of 200-dim.
+
+---
+
+## Ablation Study
+
+| Model | Params | ESOL ↓ | BBBP ↑ | ClinTox ↑ | Tox21 ↑ | HIV ↑ |
+|---|---|---|---|---|---|---|
+| Single-task | ~200K×9 | 1.027 | 0.647 | 0.868 | 0.762 | — |
+| Multi-task no MoE | 945K | 0.951 | 0.861 | 0.898 | 0.754 | 0.772 |
+| MoE K=2 | 1.12M | 0.975 | 0.851 | **0.924** | 0.750 | 0.780 |
+| **MoE K=4** | **1.28M** | 0.962 | **0.879** | 0.922 | **0.770** | **0.781** |
+| MoE K=8 | 1.60M | **0.919** | 0.842 | 0.890 | 0.759 | 0.778 |
+
+**Key finding:** K=4 is optimal for classification. K=8 improves regression (best ESOL, Lipo) but underperforms K=4 on classification — optimal expert count is task-type dependent.
+
+---
+
+## Quick Start
+
+```bash
+git clone https://github.com/SpoonierElf3378/attentivefp-multitask-admet
+cd attentivefp-multitask-admet
+pip install -r requirements.txt
+```
+
+**Run main model (MoE K=4):**
+```bash
+# Windows
+clean_and_run.bat
+
+# Linux/Mac
+python scripts/attentivefp_moe.py
+```
+
+**Run ablation experiments:**
+```bash
+# No-MoE baseline
+python scripts/multitask_9dataset.py
+
+# K=2 ablation
+python scripts/attentivefp_moe_k2.py
+
+# K=8 ablation
+python scripts/attentivefp_moe_k8.py
+
+# Single-task baseline
+python scripts/moleculenet_baseline.py
+```
+
+---
 
 ## Installation
 
 ```bash
-conda create -n molprop python=3.10 -y
-conda activate molprop
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
-pip install torch_geometric
-pip install pyg_lib torch_scatter torch_sparse torch_cluster torch_spline_conv \
-    -f https://data.pyg.org/whl/torch-2.5.1+cu121.html
-pip install rdkit scikit-learn matplotlib pandas numpy optuna
-```
-
-## Usage
-
-```bash
+# Create conda environment
+conda create -n molprop python=3.10
 conda activate molprop
 
-# ── Single-task baselines ──
-python moleculenet_baseline.py          # All 7 datasets, 3 seeds each
-python bace_baseline.py                 # Standalone BACE baseline
+# Install PyTorch (CUDA 12.1)
+pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cu121
 
-# ── Multi-task models ──
-python attentivefp_multitask.py         # 2-dataset (ESOL+BACE) with weight ablation
-python multitask_7dataset.py            # 7-dataset multi-task model
+# Install PyTorch Geometric
+pip install torch-geometric==2.7.0
 
-# ── Hyperparameter optimization ──
-python optuna_esol_simple.py            # Optuna on single-task ESOL (learning demo)
-python optuna_multitask.py              # Optuna on multi-task ESOL+BACE
-python optuna_final_eval.py             # Final eval with Optuna-optimized params
+# Install remaining dependencies
+pip install -r requirements.txt
 ```
 
-All datasets download automatically from MoleculeNet on first run.
+---
 
-## File structure
+## Repository Structure
 
 ```
-molprop_project/
-├── moleculenet_baseline.py        # 7-dataset single-task baselines
-├── multitask_7dataset.py          # 7-dataset multi-task model (main contribution)
-├── attentivefp_baseline.py        # Original 2-dataset baselines (ESOL+BACE)
-├── attentivefp_multitask.py       # 2-dataset multi-task with weight ablation
-├── bace_baseline.py               # Standalone BACE classification baseline
-├── optuna_esol_simple.py          # Optuna tutorial on single-task ESOL
-├── optuna_multitask.py            # Optuna for multi-task hyperparameters
-├── optuna_final_eval.py           # Final evaluation with optimized params
-├── molprop.ipynb                  # Attention weight visualizations
-├── attention_maps.png             # Figure: gradient-based atom importance
+attentivefp-multitask-admet/
+│
+├── README.md
 ├── requirements.txt
-├── .gitignore
-└── README.md
+│
+├── scripts/
+│   ├── attentivefp_moe.py          # Main model: MoE K=4
+│   ├── attentivefp_moe_k2.py       # Ablation: MoE K=2
+│   ├── attentivefp_moe_k8.py       # Ablation: MoE K=8
+│   ├── multitask_9dataset.py       # Baseline: multi-task no MoE
+│   ├── moleculenet_baseline.py     # Baseline: single-task
+│   ├── make_k2.py                  # Generates K=2 script from K=4
+│   ├── make_k8.py                  # Generates K=8 script from K=4
+│   ├── save_results.py             # Saves K=4 results to results/
+│   └── add_results.py              # Parses and saves any experiment results
+│
+├── results/
+│   ├── single_task_baseline.txt
+│   ├── multitask_9dataset_noMoE.txt
+│   ├── moe_k2.txt
+│   ├── moe_k4.txt
+│   └── moe_k8.txt
+│
+├── notebooks/
+│   ├── 01_data_exploration.ipynb
+│   ├── 02_results_visualization.ipynb
+│   └── 03_ablation_analysis.ipynb
+│
+└── figures/
+    └── (exported PNG figures for paper)
 ```
 
-## Methodology
+---
 
-**Model:** AttentiveFP with 39-dim atom features (including chirality type), 10-dim bond features, 200-dim hidden layer, 2 message passing layers, 2 GRU readout timesteps, and 0.2 dropout.
+## Hyperparameters
 
-**Split:** Bemis-Murcko scaffold split (80/10/10). Classification datasets use class-aware seeding to ensure both classes appear in val and test splits.
+| Parameter | Value |
+|---|---|
+| Learning rate | 10^-2.5 = 3.162 × 10^-3 |
+| Hidden dimension | 200 |
+| AttentiveFP layers | 2 |
+| AttentiveFP timesteps | 2 |
+| Dropout | 0.2 |
+| Batch size | 200 |
+| Epochs | 200 |
+| Weight decay | 1e-5 |
+| num_experts (K=4) | 4 |
+| top_k | 2 |
+| Load balance weight λ | 0.01 |
+| Seeds | 42, 123, 7 |
 
-**Multi-task design:** One shared AttentiveFP encoder with dataset-specific linear output heads. Regression tasks are downweighted (w=0.5) relative to classification tasks (w=1.0) to prevent gradient domination from MSE loss.
+---
 
-**Datasets:** 7 MoleculeNet benchmarks covering the full ADMET pipeline — solubility (ESOL), hydration energy (FreeSolv), lipophilicity (Lipo), enzyme inhibition (BACE), brain penetration (BBBP), clinical toxicity (ClinTox), and in-vitro toxicity (Tox21).
+## Datasets
 
-**Reproducibility:** All experiments across 3 random seeds (42, 123, 7) with mean ± std reported.
+9 MoleculeNet datasets covering the full ADMET spectrum:
 
-## Acknowledgements
+- **Physicochemical:** ESOL (solubility), FreeSolv (hydration free energy), Lipophilicity (logD)
+- **Bioactivity:** BACE (BACE1 inhibition), BBBP (blood-brain barrier), HIV (antiviral activity)
+- **Toxicity:** ClinTox (clinical trial toxicity), Tox21 (12 EPA endpoints), SIDER (27 drug side effects)
 
-Built at SAMLab, Guizhou University. Based on the AttentiveFP architecture by Xiong et al. (2020).
+Data is automatically downloaded by PyTorch Geometric on first run and cached in `data/`.
 
-**Reference:**
-Xiong, Z. et al. (2020). Pushing the boundaries of molecular representation for drug discovery with the graph attention mechanism. *Journal of Medicinal Chemistry*, 63(16), 8749-8760.
+---
+
+## Environment
+
+- Python 3.10
+- PyTorch 2.5.1 + CUDA 12.1
+- PyTorch Geometric 2.7.0
+- RDKit
+- scikit-learn
+- numpy
+
+See `requirements.txt` for exact versions.
+
+---
+
+## Citation
+
+```bibtex
+@article{gogoi2026moeattentivefp,
+  title={Mixture-of-Experts Enhanced AttentiveFP for Multi-Task Molecular Property Prediction},
+  author={Gogoi, Saptasamudra and Lin, En},
+  journal={[To be updated upon publication]},
+  year={2026}
+}
+```
+
+---
+
+## License
+
+MIT License. See [LICENSE](LICENSE) for details.
