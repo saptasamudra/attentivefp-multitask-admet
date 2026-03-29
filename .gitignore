@@ -1,4 +1,46 @@
-data/
-bace_best_seed123.pt bace_best_seed42.pt bace_best_seed7.pt best_model.pt best_model_seed123.pt best_model_seed42.pt best_model_seed7.pt esol_best_seed123.pt esol_best_seed42.pt esol_best_seed7.pt mt_w0.5_1.0_seed123.pt mt_w0.5_1.0_seed42.pt mt_w0.5_1.0_seed7.pt mt_w1.0_1.0_seed123.pt mt_w1.0_1.0_seed42.pt mt_w1.0_1.0_seed7.pt mt_w1.0_2.0_seed123.pt mt_w1.0_2.0_seed42.pt mt_w1.0_2.0_seed7.pt multitask_best_seed123.pt multitask_best_seed42.pt multitask_best_seed7.pt
+# Python
 __pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Data (auto-downloaded, don't commit)
+data/
+
+# Results (commit these)
+# results/ -- keep this
+
+# Jupyter checkpoints
 .ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Environment
+.env
+*.env
+molprop/
+venv/
+.venv/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Large files
+*.pt
+*.pth
+*.pkl
+*.h5
+
+# Logs
+*.log
+wandb/
