@@ -44,3 +44,4 @@ desktop.ini
 # Logs
 *.log
 wandb/
+data/
