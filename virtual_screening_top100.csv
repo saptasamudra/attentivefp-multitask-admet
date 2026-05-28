@@ -1,0 +1,30 @@
+smiles,name,known_cns,bbbp_score,predicted_cns,MW,LogP,HBA,HBD,TPSA,RotBonds,Lipinski
+CC12CCC3C(C1CCC2O)CCC4=CC(=O)CCC34C,Testosterone,True,0.9996256828308105,True,288.43,3.879,2.0,1.0,37.3,0.0,1.0
+CCCCC(CC)COC(=O)c1ccc(N)cc1,Benzocaine-analog,False,0.9991262555122375,True,249.35,3.642,3.0,1.0,52.32,7.0,1.0
+CC(C)Cc1ccc(cc1)C(C)C(=O)O,Ibuprofen,True,0.9987837672233582,True,206.28,3.073,1.0,1.0,37.3,4.0,1.0
+CC1=C(C(=O)Nc2ccccc2)C(C)(C)CC1,Nifedipine-analog,False,0.9982370138168335,True,229.32,3.762,1.0,1.0,29.1,2.0,1.0
+CC(C)(C)c1ccc(O)cc1,4-tert-Butylphenol,False,0.9977926015853882,True,150.22,2.69,1.0,1.0,20.23,0.0,1.0
+CN(C)CCOC(c1ccccc1)c1ccccc1,Diphenhydramine,True,0.9973434805870056,True,255.36,3.354,2.0,0.0,12.47,6.0,1.0
+CN(C)c1ccc(C=CC(=O)O)cc1,trans-4-(dimethylamino)cinnamic acid,True,0.9972466230392456,True,191.23,1.85,2.0,1.0,40.54,3.0,1.0
+CN1CCC[C@H]1c2cccnc2,Nicotine,True,0.9965590834617615,True,162.24,1.848,2.0,0.0,16.13,1.0,1.0
+c1ccc(cc1)C(c1ccccc1)N2CCOCC2,Meclizine-like,True,0.9963447451591492,True,253.34,3.108,2.0,0.0,12.47,3.0,1.0
+O=C(O)CCc1ccc(O)cc1,3-(4-Hydroxyphenyl)propionic acid,False,0.9959447979927063,True,166.18,1.409,2.0,2.0,57.53,3.0,1.0
+CC(=O)Oc1ccccc1C(=O)O,Aspirin,True,0.9952083230018616,True,180.16,1.31,3.0,1.0,63.6,2.0,1.0
+CC1=CC(=O)c2ccccc2C1=O,Menadione,False,0.9951391220092773,True,172.18,2.012,2.0,0.0,34.14,0.0,1.0
+CC(=O)Nc1ccc(O)cc1,Acetaminophen/Paracetamol,True,0.9949943423271179,True,151.16,1.351,2.0,2.0,49.33,1.0,1.0
+CC(=O)c1ccc(O)cc1,4-Hydroxyacetophenone,False,0.9944286346435547,True,136.15,1.595,2.0,1.0,37.3,1.0,1.0
+c1ccc2c(c1)cc1ccc3cccc4ccc2c1c34,Pyrene,True,0.9938799142837524,True,252.32,5.737,0.0,0.0,0.0,0.0,0.0
+c1ccc2c(c1)ccc1ccccc12,Anthracene,True,0.9936888217926025,True,178.23,3.993,0.0,0.0,0.0,0.0,1.0
+OC(=O)c1cccc2ccccc12,2-Naphthoic acid,True,0.9933997392654419,True,172.18,2.538,1.0,1.0,37.3,1.0,1.0
+O=C1NC(=O)c2ccccc21,Isatoic anhydride,False,0.9931319355964661,True,147.13,0.57,2.0,1.0,46.17,0.0,1.0
+O=C(O)c1ccc(N)cc1,4-Aminobenzoic acid,False,0.993025541305542,True,137.14,0.967,2.0,2.0,63.32,1.0,1.0
+CN1C(=O)CN=C(c2ccccc2)c2cc(Cl)ccc21,Diazepam,True,0.9929177761077881,True,284.75,3.154,2.0,0.0,32.67,1.0,1.0
+CC(=O)Nc1ccc2c(c1)oc1ccc(=O)oc12,Scopoletin-analog,True,0.9927529096603394,True,243.22,2.498,4.0,1.0,72.45,1.0,1.0
+Oc1ccc2ccccc2c1,2-Naphthol,False,0.9927453398704529,True,144.17,2.545,1.0,1.0,20.23,0.0,1.0
+O=C(O)c1cccc(O)c1,3-Hydroxybenzoic acid,False,0.9921841025352478,True,138.12,1.09,2.0,2.0,57.53,1.0,1.0
+O=C(O)c1ccccc1O,Salicylic acid,True,0.9921592473983765,True,138.12,1.09,2.0,2.0,57.53,1.0,1.0
+CC(=O)Oc1ccc(Cl)cc1,4-Chlorophenyl acetate,False,0.9916017651557922,True,170.59,2.265,2.0,0.0,26.3,1.0,1.0
+CC1=CC2=C(NC(=O)N2)N=C1,Dihydrouracil-analog,False,0.9898380041122437,True,149.15,0.56,2.0,2.0,61.54,0.0,1.0
+O=C(O)c1ccc(Cl)cc1,4-Chlorobenzoic acid,False,0.9883869290351868,True,156.57,2.038,1.0,1.0,37.3,1.0,1.0
+O=C(Nc1ccc(Cl)c(Cl)c1)Nc1cc(C(F)(F)F)ccc1Cl,Sorafenib-analog,False,0.9883759021759033,True,383.58,6.31,1.0,2.0,41.13,2.0,0.0
+Cc1ccc(S(=O)(=O)Nc2ccccn2)cc1,Sulfadimidine,False,0.9871074557304382,True,248.31,2.191,3.0,1.0,59.06,3.0,1.0

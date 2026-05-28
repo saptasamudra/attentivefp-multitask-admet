@@ -1,0 +1,143 @@
+{
+  "hia_hou": {
+    "mean": 0.9168724279835393,
+    "std": 0.04369510040636629,
+    "metric": "AUROC",
+    "time_min": 0.2
+  },
+  "pgp_broccatelli": {
+    "mean": 0.8541055718475073,
+    "std": 0.008423288172257863,
+    "metric": "AUROC",
+    "time_min": 0.4
+  },
+  "bioavailability_ma": {
+    "mean": 0.5710009976720983,
+    "std": 0.02923984362719995,
+    "metric": "AUROC",
+    "time_min": 0.2
+  },
+  "bbb_martins": {
+    "mean": 0.8547920575359599,
+    "std": 0.008978827209510591,
+    "metric": "AUROC",
+    "time_min": 0.6
+  },
+  "cyp2d6_veith": {
+    "mean": 0.8390528493830326,
+    "std": 0.002049806041231281,
+    "metric": "AUROC",
+    "time_min": 5.4
+  },
+  "cyp3a4_veith": {
+    "mean": 0.8730305113096707,
+    "std": 0.003581535664488778,
+    "metric": "AUROC",
+    "time_min": 6.9
+  },
+  "cyp2c9_veith": {
+    "mean": 0.8747426618257425,
+    "std": 0.0012188079351426859,
+    "metric": "AUROC",
+    "time_min": 5.8
+  },
+  "cyp2d6_substrate_carbonmangels": {
+    "mean": 0.7735085945399393,
+    "std": 0.054041371902533254,
+    "metric": "AUROC",
+    "time_min": 0.2
+  },
+  "cyp3a4_substrate_carbonmangels": {
+    "mean": 0.5732368896925859,
+    "std": 0.0037461732654177787,
+    "metric": "AUROC",
+    "time_min": 0.1
+  },
+  "cyp2c9_substrate_carbonmangels": {
+    "mean": 0.6307650569723278,
+    "std": 0.016351494158189695,
+    "metric": "AUROC",
+    "time_min": 0.1
+  },
+  "herg": {
+    "mean": 0.6963672066764849,
+    "std": 0.01860780043649008,
+    "metric": "AUROC",
+    "time_min": 0.1
+  },
+  "ames": {
+    "mean": 0.8249136788789023,
+    "std": 0.0015288845897544028,
+    "metric": "AUROC",
+    "time_min": 4.8
+  },
+  "dili": {
+    "mean": 0.9127536231884057,
+    "std": 0.036858921989455146,
+    "metric": "AUROC",
+    "time_min": 0.1
+  },
+  "caco2_wang": {
+    "mean": 0.46672263741493225,
+    "std": 0.02562037672415728,
+    "metric": "MAE",
+    "type": "regr",
+    "time_min": 0.5
+  },
+  "lipophilicity_astrazeneca": {
+    "mean": 0.6236550013224283,
+    "std": 0.01875553045044554,
+    "metric": "MAE",
+    "type": "regr",
+    "time_min": 2.7
+  },
+  "solubility_aqsoldb": {
+    "mean": 0.9165961742401123,
+    "std": 0.009147401405881994,
+    "metric": "MAE",
+    "type": "regr",
+    "time_min": 4.2
+  },
+  "ppbr_az": {
+    "mean": 9.340328534444174,
+    "std": 0.16854318988515624,
+    "metric": "MAE",
+    "type": "regr",
+    "time_min": 1.8
+  },
+  "vdss_lombardo": {
+    "mean": 0.3888074988881627,
+    "std": 0.06158595512308282,
+    "metric": "Spearman",
+    "type": "regr",
+    "time_min": 0.2
+  },
+  "half_life_obach": {
+    "mean": 0.30853159313312467,
+    "std": 0.02361558313599077,
+    "metric": "Spearman",
+    "type": "regr",
+    "time_min": 0.2
+  },
+  "clearance_microsome_az": {
+    "mean": 0.5301488375718871,
+    "std": 0.016611598198205502,
+    "metric": "Spearman",
+    "type": "regr",
+    "time_min": 0.6
+  },
+  "clearance_hepatocyte_az": {
+    "mean": 0.33066670116288255,
+    "std": 0.013231610638494064,
+    "metric": "Spearman",
+    "type": "regr",
+    "time_min": 0.4
+  },
+  "ld50_zhu": {
+    "mean": 0.6420315702756246,
+    "std": 0.010816298530988578,
+    "metric": "MAE",
+    "type": "regr",
+    "time_min": 3.5
+  }
+}
