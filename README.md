@@ -1,215 +1,167 @@
-# MoE-AttentiveFP: Multi-Task Molecular Property Prediction
+# Sparse MoE-GNN for Multi-Task ADMET Prediction
 
-[![Python 3.10](https://img.shields.io/badge/Python-3.10-blue.svg)](https://python.org)
-[![PyTorch 2.5](https://img.shields.io/badge/PyTorch-2.5.1-orange.svg)](https://pytorch.org)
-[![PyG 2.7](https://img.shields.io/badge/PyG-2.7.0-green.svg)](https://pyg.org)
-[![Datasets](https://img.shields.io/badge/Datasets-9%20MoleculeNet-teal.svg)](https://moleculenet.org)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-
-> Sparse Mixture-of-Experts routing applied to multi-task ADMET molecular property prediction across 9 MoleculeNet benchmarks. First application of MoE routing to this problem setting.
-
-**Authors:** Saptasamudra Gogoi · 林恩 · Biotechnology
+**Saptasamudra Gogoi** · SAMLab, Guizhou University · Supervisor: Prof. Li Yuquan
 
 ---
 
-## Results
+## Overview
 
-State-of-the-art on ClinTox and BBBP under scaffold split evaluation.
+This repository benchmarks **Sparse Mixture-of-Experts (MoE) routing** as a universal plug-in enhancement module for graph neural networks on multi-task ADMET molecular property prediction across 10 MoleculeNet datasets.
 
-| Dataset | Task | MoE K=4 (ours) | Published | Δ |
-|---|---|---|---|---|
-| ESOL | RMSE ↓ | 0.9623 ± 0.069 | 0.877 | — |
-| FreeSolv | RMSE ↓ | 2.8020 ± 0.182 | 2.082 | — |
-| Lipophilicity | RMSE ↓ | 0.8121 ± 0.016 | 0.655 | — |
-| BACE | AUC ↑ | 0.7908 ± 0.031 | 0.863 | — |
-| **BBBP** | **AUC ↑** | **0.8787 ± 0.033** | 0.862 | **+1.7%** ✓ |
-| HIV | AUC ↑ | 0.7809 ± 0.024 | — | new |
-| **ClinTox** | **AUC ↑** | **0.9215 ± 0.014** | 0.832 | **+9.0%** ✓ |
-| Tox21 | AUC ↑ | 0.7703 ± 0.009 | 0.829 | — |
-| SIDER | AUC ↑ | 0.5875 ± 0.023 | — | new |
-
-All results: scaffold split, 3 seeds (42, 123, 7), mean ± std.
+MoE routing is applied identically to three backbone architectures — **GCN, DMPNN, and GIN** — demonstrating architecture-agnostic improvement with chemical interpretability analysis.
 
 ---
 
-## Architecture
+## Key Results
+
+| Dataset | DMPNN | MoE-GCN | MoE-DMPNN | AttentiveFP | GROVER† |
+|---------|-------|---------|-----------|-------------|---------|
+| Tox21 (AUC↑) | 0.727 | **0.745** | 0.731 | 0.746 | 0.831 |
+| ToxCast (AUC↑) | 0.633 | **0.647** | 0.643 | 0.675 | 0.737 |
+| ESOL (RMSE↓) | 1.324 | **1.067** | 1.105 | 1.061 | 0.983 |
+| FreeSolv (RMSE↓) | 5.103 | 3.591 | **3.432** | 2.573 | 1.544 |
+| Lipo (RMSE↓) | 0.723 | 0.722 | **0.712** | 0.685 | 0.561 |
+
+† GROVER results from Rong et al. (2020) — pretrained on 10M molecules, shown as reference only.
+
+**MoE-GCN achieves 19.4% RMSE reduction on ESOL and MoE-DMPNN 32.7% on FreeSolv vs plain DMPNN.**
+
+---
+
+## Project Structure
 
 ```
-Molecule (SMILES)
-    ↓ GenFeatures (39-dim atom, 10-dim bond)
-    ↓ AttentiveFP Encoder → mol_repr [B, 200]
-    ↓ MoE Module (K experts, top-2 sparse routing) → expert_repr [B, 200]
-    ↓ Concat → fused [B, 400]
-    ↓ 9 Task-Specific Heads → ADMET predictions
+molprop_project/
+│
+├── Core benchmark scripts
+│   ├── moegcn_classif.py          # MoE-GCN classification (7 datasets)
+│   ├── moegcn_regr.py             # MoE-GCN regression (3 datasets)
+│   ├── moedmpnn_classif.py        # MoE-DMPNN classification
+│   ├── moedmpnn_regr.py           # MoE-DMPNN regression
+│   ├── dmpnn_classif.py           # Plain DMPNN classification baseline
+│   ├── dmpnn_regr.py              # Plain DMPNN regression baseline
+│   └── toxcast_all.py             # ToxCast multi-model benchmark
+│
+├── Data preparation
+│   ├── fix_bbbp_bace.py           # Stratified scaffold split fix
+│   ├── prepare_grover_data.py     # Convert to GROVER CSV format
+│   └── attentivefp_remaining.py   # AttentiveFP on remaining datasets
+│
+├── Post-compute analysis
+│   ├── extend_seeds.py            # Extend 3-seed results to 5 seeds
+│   ├── compile_results.py         # Final results table + Wilcoxon tests
+│   ├── run_grover.py              # GROVER finetuning runner
+│   └── save_previous.py          # Manual result checkpointing
+│
+├── Interpretability & ablations
+│   ├── tsne_routing.py            # t-SNE expert routing visualization
+│   ├── expert_load_balance.py     # Expert load over training epochs
+│   ├── chemical_subgroup.py       # Physicochemical descriptor per expert
+│   ├── topk_comparison.py         # K=1,2,4,8 ablation study
+│   ├── param_timing.py            # Parameter count + inference timing
+│   ├── training_curves.py         # Training/validation loss curves
+│   └── regression_fix.py         # Uncertainty weighting for regression
+│
+├── Results (JSON)
+│   ├── results_dmpnn_classif.json
+│   ├── results_dmpnn_regr.json
+│   ├── results_moegcn_classif.json
+│   ├── results_moegcn_regr.json
+│   ├── results_moedmpnn_classif.json
+│   ├── results_moedmpnn_regr.json
+│   └── results_attentivefp.json
+│
+├── Figures
+│   ├── tsne_plots/                # t-SNE routing visualizations
+│   ├── training_curves/           # Loss curve plots
+│   ├── chemical_subgroup.png      # Expert chemical profile boxplots
+│   ├── expert_load_balance.png    # Expert load over epochs
+│   ├── topk_comparison.png        # Top-K ablation
+│   ├── param_timing.png           # Efficiency comparison
+│   └── regression_fix.png        # Uncertainty weighting results
+│
+└── final_results_table.csv        # Paper-ready results table
 ```
 
-**MoE routing:** A gating network (Linear 200→K) scores each molecule against K experts. Only the top-2 experts activate per molecule. Load-balancing auxiliary loss (λ=0.01) prevents expert collapse.
-
-**Fused representation:** Concatenating mol_repr and expert_repr preserves global molecular information while adding expert-specialized signal. Task heads receive 400-dim input instead of 200-dim.
-
 ---
 
-## Ablation Study
-
-| Model | Params | ESOL ↓ | BBBP ↑ | ClinTox ↑ | Tox21 ↑ | HIV ↑ |
-|---|---|---|---|---|---|---|
-| Single-task | ~200K×9 | 1.027 | 0.647 | 0.868 | 0.762 | — |
-| Multi-task no MoE | 945K | 0.951 | 0.861 | 0.898 | 0.754 | 0.772 |
-| MoE K=2 | 1.12M | 0.975 | 0.851 | **0.924** | 0.750 | 0.780 |
-| **MoE K=4** | **1.28M** | 0.962 | **0.879** | 0.922 | **0.770** | **0.781** |
-| MoE K=8 | 1.60M | **0.919** | 0.842 | 0.890 | 0.759 | 0.778 |
-
-**Key finding:** K=4 is optimal for classification. K=8 improves regression (best ESOL, Lipo) but underperforms K=4 on classification — optimal expert count is task-type dependent.
-
----
-
-## Quick Start
+## Setup
 
 ```bash
-git clone https://github.com/SpoonierElf3378/attentivefp-multitask-admet
-cd attentivefp-multitask-admet
-pip install -r requirements.txt
-```
-
-**Run main model (MoE K=4):**
-```bash
-# Windows
-clean_and_run.bat
-
-# Linux/Mac
-python scripts/attentivefp_moe.py
-```
-
-**Run ablation experiments:**
-```bash
-# No-MoE baseline
-python scripts/multitask_9dataset.py
-
-# K=2 ablation
-python scripts/attentivefp_moe_k2.py
-
-# K=8 ablation
-python scripts/attentivefp_moe_k8.py
-
-# Single-task baseline
-python scripts/moleculenet_baseline.py
+conda create -n moe_admet python=3.10
+conda activate moe_admet
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
+pip install torch_geometric
+pip install rdkit scikit-learn optuna pandas matplotlib
 ```
 
 ---
 
-## Installation
+## Running the Benchmark
 
 ```bash
-# Create conda environment
-conda create -n molprop python=3.10
-conda activate molprop
+# Step 1: Run MoE-GCN
+python moegcn_classif.py
+python moegcn_regr.py
 
-# Install PyTorch (CUDA 12.1)
-pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cu121
+# Step 2: Run MoE-DMPNN
+python moedmpnn_classif.py
+python moedmpnn_regr.py
 
-# Install PyTorch Geometric
-pip install torch-geometric==2.7.0
+# Step 3: Run plain DMPNN baselines
+python dmpnn_classif.py
+python dmpnn_regr.py
 
-# Install remaining dependencies
-pip install -r requirements.txt
+# Step 4: Fix BBBP and BACE
+python fix_bbbp_bace.py
+
+# Step 5: Extend to 5 seeds
+python extend_seeds.py
+
+# Step 6: Compile final table
+python compile_results.py
 ```
 
+Scripts use JSON checkpointing — safe to interrupt and resume.
+
 ---
 
-## Repository Structure
+## MoE Architecture
+
+The sparse MoE layer is inserted between global mean pooling and the task head:
 
 ```
-attentivefp-multitask-admet/
-│
-├── README.md
-├── requirements.txt
-│
-├── scripts/
-│   ├── attentivefp_moe.py          # Main model: MoE K=4
-│   ├── attentivefp_moe_k2.py       # Ablation: MoE K=2
-│   ├── attentivefp_moe_k8.py       # Ablation: MoE K=8
-│   ├── multitask_9dataset.py       # Baseline: multi-task no MoE
-│   ├── moleculenet_baseline.py     # Baseline: single-task
-│   ├── make_k2.py                  # Generates K=2 script from K=4
-│   ├── make_k8.py                  # Generates K=8 script from K=4
-│   ├── save_results.py             # Saves K=4 results to results/
-│   └── add_results.py              # Parses and saves any experiment results
-│
-├── results/
-│   ├── single_task_baseline.txt
-│   ├── multitask_9dataset_noMoE.txt
-│   ├── moe_k2.txt
-│   ├── moe_k4.txt
-│   └── moe_k8.txt
-│
-├── notebooks/
-│   ├── 01_data_exploration.ipynb
-│   ├── 02_results_visualization.ipynb
-│   └── 03_ablation_analysis.ipynb
-│
-└── figures/
-    └── (exported PNG figures for paper)
+G(h) = TopK( W_g * h, K )
+y = sum_{i in TopK} w_i * Expert_i(h)
+L_bal = E * sum_i (mean_load_i)^2
+L_total = L_task + 0.01 * L_bal
 ```
 
----
-
-## Hyperparameters
-
-| Parameter | Value |
-|---|---|
-| Learning rate | 10^-2.5 = 3.162 × 10^-3 |
-| Hidden dimension | 200 |
-| AttentiveFP layers | 2 |
-| AttentiveFP timesteps | 2 |
-| Dropout | 0.2 |
-| Batch size | 200 |
-| Epochs | 200 |
-| Weight decay | 1e-5 |
-| num_experts (K=4) | 4 |
-| top_k | 2 |
-| Load balance weight λ | 0.01 |
-| Seeds | 42, 123, 7 |
+E = number of experts, K = active experts per forward pass.
 
 ---
 
-## Datasets
+## Expert Chemical Specialization (ESOL)
 
-9 MoleculeNet datasets covering the full ADMET spectrum:
+| Expert | MW | LogP | TPSA | Character | n |
+|--------|-----|------|------|-----------|---|
+| E15 | 253.7 | 2.35 | 57.9 | Drug-like polar | 472 |
+| E2 | 197.6 | 3.54 | 14.0 | Lipophilic | 304 |
+| E4 | 143.9 | 1.71 | 20.5 | Small nonpolar | 159 |
+| E10 | 114.1 | 1.21 | 25.2 | Small hydrophilic | 137 |
 
-- **Physicochemical:** ESOL (solubility), FreeSolv (hydration free energy), Lipophilicity (logD)
-- **Bioactivity:** BACE (BACE1 inhibition), BBBP (blood-brain barrier), HIV (antiviral activity)
-- **Toxicity:** ClinTox (clinical trial toxicity), Tox21 (12 EPA endpoints), SIDER (27 drug side effects)
-
-Data is automatically downloaded by PyTorch Geometric on first run and cached in `data/`.
-
----
-
-## Environment
-
-- Python 3.10
-- PyTorch 2.5.1 + CUDA 12.1
-- PyTorch Geometric 2.7.0
-- RDKit
-- scikit-learn
-- numpy
-
-See `requirements.txt` for exact versions.
+Experts learn Lipinski-like chemical space partitioning without explicit supervision.
 
 ---
 
 ## Citation
 
-```bibtex
-@article{gogoi2026moeattentivefp,
-  title={Mixture-of-Experts Enhanced AttentiveFP for Multi-Task Molecular Property Prediction},
-  author={Gogoi, Saptasamudra and Lin, En},
-  journal={[To be updated upon publication]},
-  year={2026}
-}
-```
+> Gogoi, S. (2026). Sparse MoE-GNN for Multi-Task ADMET Molecular Property Prediction.
+> SAMLab, Guizhou University. Supervisor: Prof. Li Yuquan.
 
 ---
 
-## License
+## Acknowledgements
 
-MIT License. See [LICENSE](LICENSE) for details.
+Supervised by Prof. Li Yuquan, SAMLab, College of Life Sciences, Guizhou University.
+Built with PyTorch Geometric, RDKit, and Optuna.
