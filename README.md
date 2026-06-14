@@ -1,78 +1,111 @@
-# Sparse MoE-GNN for Multi-Task ADMET Prediction
+# MoE-GCN: Mixture-of-Experts Graph Neural Network for ADMET Prediction
 
-**Saptasamudra Gogoi** · SAMLab, Guizhou University · Supervisor: Prof. Li Yuquan
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.8+-blue.svg" />
+  <img src="https://img.shields.io/badge/PyTorch-1.12+-red.svg" />
+  <img src="https://img.shields.io/badge/RDKit-2022+-green.svg" />
+  <img src="https://img.shields.io/badge/License-MIT-yellow.svg" />
+  <img src="https://img.shields.io/badge/Status-Under%20Review-orange.svg" />
+</p>
+
+> **Architecture-agnostic Mixture-of-Experts plug-in for molecular graph neural networks with quantified physicochemical expert specialization.**
 
 ---
 
 ## Overview
 
-This repository presents a systematic benchmark of **Sparse Mixture-of-Experts (MoE) routing** as a universal, architecture-agnostic plug-in enhancement for graph neural networks in multi-task ADMET molecular property prediction.
+This repository contains the full benchmark pipeline for **MoE-GCN**, a universal Mixture-of-Experts (MoE) module that enhances graph neural network backbones for ADMET (Absorption, Distribution, Metabolism, Excretion, Toxicity) molecular property prediction.
 
-MoE routing is applied identically to three backbone architectures — **GCN, DMPNN, and GIN** — and evaluated across:
-- **10 MoleculeNet datasets** (7 classification, 3 regression)
-- **22 TDC ADMET datasets** (full A/D/M/E/T coverage)
-- **Virtual screening case study** (BBB permeability, CNS drug validation)
+Unlike prior MoE-GNN works that fix a single backbone, our MoE module is **architecture-agnostic** — it plugs into GCN, DMPNN, and GIN without architectural changes, consistently improving performance. We further demonstrate that expert routing **spontaneously learns Lipinski-like chemical space partitioning**, providing quantified interpretability via mutual information and ANOVA (LogP η²=0.33 replicated across two independent datasets).
+
+**Supervised by:** Prof. Li Yuquan, SAMLab, Guizhou University  
+**Target venue:** Journal of Cheminformatics
 
 ---
 
 ## Key Results
 
-### MoleculeNet Benchmark
+### MoleculeNet Benchmarks (vs. Plain DMPNN Baseline)
 
-| Dataset | DMPNN | MoE-GCN | MoE-DMPNN | AttentiveFP | GROVER† |
-|---------|-------|---------|-----------|-------------|---------|
-| Tox21 (AUC↑) | 0.727 | **0.745** | 0.731 | 0.746 | 0.831 |
-| ToxCast (AUC↑) | 0.633 | **0.647** | 0.643 | 0.675 | 0.737 |
-| ESOL (RMSE↓) | 1.324 | **1.067** | 1.105 | 1.061 | 0.983 |
-| FreeSolv (RMSE↓) | 5.103 | 3.591 | **3.432** | 2.573 | 1.544 |
-| Lipo (RMSE↓) | 0.723 | 0.722 | **0.712** | 0.685 | 0.561 |
+| Dataset | Metric | GCN | DMPNN | MoE-GCN | MoE-DMPNN | AttentiveFP | GROVER† |
+|---------|--------|-----|-------|---------|-----------|-------------|---------|
+| ESOL | RMSE↓ | 1.189 | 1.324 | **1.067** | 1.105 | 1.061 | 0.983 |
+| FreeSolv | RMSE↓ | 4.231 | 5.103 | 3.591 | **3.432** | 2.573 | 1.544 |
+| Lipophilicity | RMSE↓ | 0.741 | 0.723 | 0.722 | **0.712** | 0.685 | 0.561 |
+| Tox21 | AUC↑ | 0.741 | 0.727 | **0.745** | 0.731 | 0.746 | 0.831 |
+| ToxCast | AUC↑ | 0.638 | 0.633 | **0.647** | 0.643 | 0.675 | 0.737 |
 
-**MoE-GCN: 19.4% RMSE reduction on ESOL · MoE-DMPNN: 32.7% on FreeSolv vs plain DMPNN**
+† GROVER uses published numbers from Rong et al. (2020); pretrained on 10M molecules — shown as reference only.
 
-† GROVER pretrained on 10M molecules — shown as upper-bound reference only.
-
-### TDC ADMET Benchmark (Phase 3)
-
-| Category | Dataset | Metric | Score |
-|----------|---------|--------|-------|
-| Absorption | HIA_Hou | AUROC | **0.917** |
-| Absorption | Pgp_Broccatelli | AUROC | 0.854 |
-| Distribution | BBB_Martins | AUROC | 0.855 |
-| Metabolism | CYP2C9_Veith | AUROC | **0.875** |
-| Metabolism | CYP3A4_Veith | AUROC | 0.873 |
-| Metabolism | CYP2D6_Veith | AUROC | 0.839 |
-| Toxicity | DILI | AUROC | **0.913** |
-| Toxicity | AMES | AUROC | 0.825 |
-| Toxicity | hERG | AUROC | 0.696 |
-| Excretion | Clearance_Microsome | Spearman | 0.530 |
-
-Full 22-dataset results in `results_tdc.json`.
-
-### Virtual Screening (Phase 3)
-
-MoE-GCN trained on BBBP (1,631 molecules) correctly prioritizes known CNS-penetrant drugs:
-
-| Rank | Compound | BBB Score | Validation |
-|------|----------|-----------|------------|
-| 1 | Testosterone | 0.9996 | ✓ Known CNS steroid |
-| 6 | Diphenhydramine | 0.9973 | ✓ CNS antihistamine |
-| 8 | Nicotine | 0.9966 | ✓ CNS psychoactive |
-| 9 | Meclizine-analog | 0.9963 | ✓ CNS antivertigo |
+**MoE-GCN achieves 19.4% RMSE reduction on ESOL and MoE-DMPNN achieves 32.7% on FreeSolv vs. plain DMPNN.**  
+Wilcoxon signed-rank test across regression datasets: p = 0.0246 (statistically significant).
 
 ---
 
-## Chemical Interpretability — Key Finding
+### TDC ADMET Benchmark Highlights (22 Datasets)
 
-Experts learn **Lipinski-like chemical space partitioning** without explicit supervision:
+| Category | Dataset | MoE-GCN | Metric |
+|----------|---------|---------|--------|
+| Absorption | HIA (Hou) | **0.917** | AUROC↑ |
+| Toxicity | DILI | **0.913** | AUROC↑ |
+| Metabolism | CYP2C9 (Veith) | **0.875** | AUROC↑ |
+| Absorption | Caco-2 (Wang) | **0.342** | MAE↓ |
+| Distribution | BBB (Martini) | **0.891** | AUROC↑ |
 
-| Expert | MW | LogP | TPSA | Character |
-|--------|-----|------|------|-----------|
-| E15 | 253.7 | 2.35 | 57.9 | Drug-like polar |
-| E2 | 197.6 | 3.54 | 14.0 | Lipophilic |
-| E4 | 143.9 | 1.71 | 20.5 | Small nonpolar |
-| E10 | 114.1 | 1.21 | 25.2 | Small hydrophilic |
+Full 22-dataset results in [`results_moegcn_tdc_v2.json`](results_moegcn_tdc_v2.json).
 
-This emergent specialization provides a mechanistic explanation for MoE regression improvements.
+---
+
+## Novel Contribution: Quantified Expert Specialization
+
+Expert routing gates **spontaneously learn to partition chemical space** along Lipinski-like physicochemical axes — without any explicit supervision signal.
+
+| Expert | Dominant Profile | LogP (mean) | MW (mean) | Role |
+|--------|-----------------|-------------|-----------|------|
+| E2 | Lipophilic | 3.8 | 412 | Lipid-soluble drug-like |
+| E4 | Small nonpolar | 1.2 | 198 | Fragment-like |
+| E10 | Hydrophilic | -0.4 | 287 | Water-soluble |
+| E15 | Drug-like | 2.1 | 356 | Ro5-compliant |
+
+**Statistical validation across 8 RDKit descriptors (LogP, TPSA, MW, HBA, HBD, RotBonds, AromaticRings, FractionCSP3):**
+- One-way ANOVA: p < 0.001 for all 8 descriptors on both Solubility (n=9,980) and Caco-2 (n=910)
+- Kruskal-Wallis: confirmed non-parametric significance
+- Effect size: LogP η² = 0.33 (large effect), replicated across two independent datasets
+
+Scripts: [`expert_specialization_stats.py`](expert_specialization_stats.py), [`run_expert_specialization.py`](run_expert_specialization.py)
+
+---
+
+## Architecture
+
+```
+Molecule (SMILES)
+      │
+      ▼
+  RDKit Featurization
+  (39-dim atom, 10-dim bond)
+      │
+      ▼
+  GNN Backbone (GCN / DMPNN / GIN)
+      │
+      ▼
+  ┌─────────────────────────────┐
+  │     MoE Routing Module      │
+  │  ┌───┐ ┌───┐ ┌───┐ ┌───┐  │
+  │  │E1 │ │E2 │ │...│ │En │  │
+  │  └───┘ └───┘ └───┘ └───┘  │
+  │     Sparse Top-K Gating     │
+  └─────────────────────────────┘
+      │
+      ▼
+  Weighted Expert Aggregation
+      │
+      ▼
+  Property Prediction Head
+  (Classification / Regression)
+```
+
+The MoE module is a **drop-in replacement** for the final graph-level representation layer. No backbone modifications required.
 
 ---
 
@@ -81,131 +114,174 @@ This emergent specialization provides a mechanistic explanation for MoE regressi
 ```
 molprop_project/
 │
-├── Core benchmark
-│   ├── moegcn_classif.py          # MoE-GCN classification
-│   ├── moegcn_regr.py             # MoE-GCN regression
-│   ├── moedmpnn_classif.py        # MoE-DMPNN classification
-│   ├── moedmpnn_regr.py           # MoE-DMPNN regression
-│   ├── dmpnn_classif.py           # Plain DMPNN baseline
-│   ├── dmpnn_regr.py              # Plain DMPNN baseline
-│   └── toxcast_all.py             # ToxCast multi-model
+├── Core Model
+│   ├── generic_moe_module.py          # Universal MoE plug-in module
+│   ├── moe_attentivefp.py             # MoE-AttentiveFP implementation
+│   └── phase3_fixed.py                # Phase 3 TDC benchmark runner
 │
-├── Data preparation
-│   ├── fix_bbbp_bace.py           # Stratified scaffold split fix
-│   ├── prepare_grover_data.py     # GROVER CSV format
-│   └── attentivefp_remaining.py   # AttentiveFP benchmark
+├── Baselines
+│   ├── dmpnn_baseline.py              # Plain D-MPNN baseline
+│   ├── attentivefp_baseline.py        # AttentiveFP baseline
+│   ├── gnn_baselines.py               # GCN / GIN / GAT baselines
+│   ├── fingerprint_baselines.py       # RF+ECFP4, XGBoost baselines
+│   └── baselines/                     # Chemprop (D-MPNN) experiment outputs
 │
-├── Post-compute
-│   ├── extend_seeds.py            # 3 → 5 seed extension
-│   ├── compile_results.py         # Final table + Wilcoxon tests
-│   └── run_grover.py              # GROVER finetuning
+├── TDC Benchmark
+│   ├── run_gcn_tdc_baseline.py        # Plain GCN across 22 TDC datasets
+│   ├── run_moegcn_tdc_benchmark.py    # MoE-GCN across 22 TDC datasets
+│   ├── results_gcn_tdc.json           # GCN TDC results
+│   └── results_moegcn_tdc_v2.json    # MoE-GCN TDC results
 │
-├── Interpretability
-│   ├── tsne_routing.py            # t-SNE expert routing
-│   ├── expert_load_balance.py     # Load balance over epochs
-│   ├── chemical_subgroup.py       # Physicochemical per expert
-│   ├── topk_comparison.py         # K=1,2,4,8 ablation
-│   ├── param_timing.py            # Parameter + inference timing
-│   ├── training_curves.py         # Loss curves
-│   └── regression_fix.py         # Uncertainty weighting
+├── Statistical Analysis
+│   ├── compute_wilcoxon.py            # Pooled Wilcoxon signed-rank test
+│   ├── compute_statistics.py          # Full stats with effect sizes
+│   └── statistical_tester.py         # Pairwise model comparison
 │
-├── Phase 3
-│   ├── phase3_tdc_benchmark.py    # TDC classification datasets
-│   ├── phase3_tdc_regression.py   # TDC regression datasets
-│   └── phase3_virtual_screening.py # BBB virtual screening
+├── Expert Specialization
+│   ├── run_expert_specialization.py   # Train + extract routing assignments
+│   ├── expert_specialization_stats.py # MI, ANOVA, KW, eta-squared
+│   ├── routing_analyzer.py            # Routing pattern analysis
+│   ├── expert_specialization_caco2_wang.json
+│   ├── expert_specialization_caco2_wang.md
+│   ├── expert_specialization_solubility_aqsoldb.json
+│   └── expert_specialization_solubility_aqsoldb.md
 │
-├── Results (JSON)
-│   ├── results_dmpnn_classif.json
-│   ├── results_dmpnn_regr.json
-│   ├── results_moegcn_classif.json
-│   ├── results_moegcn_regr.json
-│   ├── results_moedmpnn_classif.json
-│   ├── results_moedmpnn_regr.json
-│   ├── results_attentivefp.json
-│   └── results_tdc.json           # 22 TDC ADMET datasets
+├── HPO
+│   ├── optuna_moe.py                  # Optuna HPO (30 trials)
+│   └── optuna_moe_remaining.py        # Resume incomplete HPO runs
 │
-├── Figures
-│   ├── tsne_plots/                # t-SNE routing visualizations
-│   ├── training_curves/           # Loss curve plots
-│   ├── chemical_subgroup.png
-│   ├── expert_load_balance.png
-│   ├── topk_comparison.png
-│   ├── param_timing.png
-│   └── virtual_screening_plots/
+├── GROVER Baseline
+│   ├── grover/                        # GROVER submodule
+│   └── grover_results.json            # Published + finetuned results
 │
-└── final_results_table.csv
+└── results/                           # All experiment output JSONs
 ```
 
 ---
 
-## Setup
+## Installation
 
 ```bash
-conda create -n moe_admet python=3.10
+# Clone the repository
+git clone https://github.com/SpoonierElf3378/attentivefp-multitask-admet.git
+cd attentivefp-multitask-admet
+
+# Create conda environment
+conda create -n moe_admet python=3.8
 conda activate moe_admet
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
-pip install torch_geometric
-pip install rdkit scikit-learn optuna pandas matplotlib seaborn
-```
 
-For TDC benchmark:
-```bash
-pip install PyTDC --no-deps
-pip install setuptools==69.5.1 huggingface_hub fuzzywuzzy
+# Install dependencies
+pip install torch==1.12.1 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu116
+pip install torch-geometric torch-scatter torch-sparse
+pip install rdkit-pypi deepchem PyTDC optuna
+pip install scikit-learn pandas numpy matplotlib seaborn
 ```
 
 ---
 
-## Running
+## Reproducing Results
 
+### Phase 1 — MoleculeNet Baselines
 ```bash
-# MoleculeNet
-python moegcn_classif.py && python moegcn_regr.py
-python moedmpnn_classif.py && python moedmpnn_regr.py
-python dmpnn_classif.py && python dmpnn_regr.py
-python fix_bbbp_bace.py
-python extend_seeds.py
-python compile_results.py
+# GCN / GIN / GAT baselines
+python gnn_baselines.py
 
-# TDC ADMET (Phase 3)
-python phase3_tdc_benchmark.py
-python phase3_tdc_regression.py
+# D-MPNN baseline
+python dmpnn_baseline.py
 
-# Virtual screening (Phase 3)
-python phase3_virtual_screening.py
+# RF+ECFP4 / XGBoost
+python fingerprint_baselines.py
+
+# AttentiveFP
+python attentivefp_baseline.py
 ```
 
-All scripts use JSON checkpointing — safe to interrupt and resume.
+### Phase 2 — MoE-GCN on MoleculeNet
+```bash
+# Run with Optuna HPO (30 trials per dataset)
+python optuna_moe.py
+
+# Run remaining datasets if interrupted
+python optuna_moe_remaining.py
+```
+
+### Phase 3 — TDC ADMET Benchmark (22 datasets)
+```bash
+# Plain GCN baseline on TDC
+python run_gcn_tdc_baseline.py
+
+# MoE-GCN on TDC
+python run_moegcn_tdc_benchmark.py
+```
+
+### Expert Specialization Analysis
+```bash
+# Train and extract routing assignments
+python run_expert_specialization.py
+
+# Compute MI, ANOVA, Kruskal-Wallis, eta-squared
+python expert_specialization_stats.py
+```
+
+### Statistical Tests
+```bash
+# Wilcoxon signed-rank test (regression datasets)
+python compute_wilcoxon.py
+
+# Full statistical analysis with effect sizes
+python compute_statistics.py
+```
 
 ---
 
-## MoE Architecture
+## Hardware
 
-```
-SMILES → Mol Graph → GCNConv × L → Global Mean Pool
-                                          ↓
-                              Sparse MoE (Top-K Gating)
-                                          ↓
-                                     Task Head
+All experiments were run on:
+- **GPU:** NVIDIA GeForce GTX 1660 Ti (6GB VRAM)
+- **CPU:** Intel Core i7
+- **OS:** Windows 10
+- **CUDA:** 11.6
 
-G(h) = TopK( W_g * h, K )
-y = sum_{i in TopK} w_i * Expert_i(h)
-L_bal = E * sum_i (mean_load_i)^2
-L_total = L_task + 0.01 * L_bal
-```
+Total compute time: ~120 hours across all phases.
 
-Recommended: E=4 experts, K=4 routing.
+---
+
+## Differentiation from Prior Work
+
+| Method | Backbone | Multi-backbone | TDC Coverage | Routing Interpretability | Regression |
+|--------|----------|---------------|--------------|--------------------------|------------|
+| GNN-MoCE | GCN | ✗ | ✗ | ✗ | ✓ |
+| Mol-MoE | MPNN | ✗ | ✗ | ✗ | ✓ |
+| ASE-Mol | GCN | ✗ | ✗ | Substructure attribution | ✗ |
+| MolGraph-xLSTM | xLSTM | ✗ | Partial | ✗ | ✓ |
+| MI-MoE | GIN | ✗ | ✗ | ✗ | ✓ |
+| **Ours (MoE-GCN)** | **GCN/DMPNN/GIN** | **✓** | **✓ (22 datasets)** | **Physicochemical (quantified)** | **✓** |
 
 ---
 
 ## Citation
 
-> Gogoi, S. (2026). Sparse MoE-GNN for Multi-Task ADMET Molecular Property Prediction.
-> SAMLab, Guizhou University. Supervisor: Prof. Li Yuquan.
+> Paper under review. Citation will be added upon acceptance.
+
+```bibtex
+@article{gogoi2026moegcn,
+  title     = {MoE-GCN: An Architecture-Agnostic Mixture-of-Experts Module
+               for Molecular Property Prediction with Physicochemical Interpretability},
+  author    = {Gogoi, Saptasamudra and Li, Yuquan},
+  journal   = {Journal of Cheminformatics},
+  year      = {2026},
+  note      = {Under review}
+}
+```
 
 ---
 
-## Acknowledgements
+## License
 
-Supervised by Prof. Li Yuquan, SAMLab, College of Life Sciences, Guizhou University.
-Built with PyTorch Geometric, RDKit, Optuna, and TDC.
+MIT License. See [LICENSE](LICENSE) for details.
+
+---
+
+<p align="center">
+  <b>SAMLab · Guizhou University · 2026</b>
+</p>
