@@ -1,0 +1,77 @@
+====================================================================
+                    GNN BASELINES - CHEAT SHEET
+====================================================================
+
+1. CREATE FOLDERS
+   Copy-paste into Command Prompt:
+
+   cd D:\molprop_project\baselines\gin_gcn_gat
+   mkdir baselines\saved_models
+   mkdir baselines\results
+   mkdir logs
+
+====================================================================
+
+2. EDIT DATA PATH
+   Open: run_all_experiments.py (with Notepad)
+   Line 18: Change to where your ESOL.csv is located
+
+   Example:
+   DATA_DIR = r'D:\molprop_project\data\moleculenet'
+
+====================================================================
+
+3. FIND YOUR ENVIRONMENT
+   Command:
+   
+   conda env list
+
+   Common names: base, pytorch, torch
+
+====================================================================
+
+4. RUN EXPERIMENTS
+   Commands:
+
+   cd D:\molprop_project\baselines\gin_gcn_gat
+   conda activate base
+   python run_all_experiments.py
+
+   (Replace 'base' with YOUR environment name)
+
+====================================================================
+
+5. VIEW RESULTS (after experiments finish)
+   Commands:
+
+   cd D:\molprop_project\baselines\gin_gcn_gat
+   conda activate base
+   python aggregate_gnn_results.py
+
+====================================================================
+
+TROUBLESHOOTING:
+
+Problem: "conda not recognized"
+Fix: Use Anaconda Prompt instead of Command Prompt
+
+Problem: "No module named torch"  
+Fix: Try different environment name (pytorch, torch, etc.)
+
+Problem: "FileNotFoundError: ESOL.csv"
+Fix: Check data path in step 2 - make sure it's correct
+
+Problem: Experiment fails
+Fix: Look at log file in logs\ folder for error details
+
+====================================================================
+
+QUICK TEST (before running all 135):
+
+cd D:\molprop_project\baselines\gin_gcn_gat
+conda activate base
+python gnn_baselines.py --model GIN --dataset BBBP --seed 0 --data_dir D:\molprop_project\data\moleculenet --save_dir baselines\saved_models --results_file baselines\results\test.json
+
+If this works (5-10 mins), you're ready for the full run!
+
+====================================================================

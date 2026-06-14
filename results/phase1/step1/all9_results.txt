@@ -1,0 +1,39 @@
+Fingerprint + ML Baseline Results (All 9 Datasets)
+======================================================================
+
+ESOL (regression, 1 task(s)):
+  RF:  RMSE = 1.1631
+  XGB: RMSE = 1.1015
+
+FreeSolv (regression, 1 task(s)):
+  RF:  RMSE = 2.3176
+  XGB: RMSE = 1.8213
+
+Lipo (regression, 1 task(s)):
+  RF:  RMSE = 0.8245
+  XGB: RMSE = 0.7961
+
+BACE (classification, 1 task(s)):
+  RF:  AUC-ROC = 0.8864
+  XGB: AUC-ROC = 0.8861
+
+BBBP (classification, 1 task(s)):
+  RF:  AUC-ROC = 0.8661
+  XGB: AUC-ROC = 0.8823
+
+HIV (classification, 1 task(s)):
+  RF:  AUC-ROC = 0.8309
+  XGB: AUC-ROC = 0.8277
+
+ClinTox (classification, 2 task(s)):
+  RF:  AUC-ROC = 0.8161
+  XGB: AUC-ROC = 0.8934
+
+Tox21 (classification, 12 task(s)):
+  RF:  AUC-ROC = 0.8050
+  XGB: AUC-ROC = 0.7932
+
+SIDER (classification, 27 task(s)):
+  RF:  AUC-ROC = 0.6331
+  XGB: AUC-ROC = 0.6417
+

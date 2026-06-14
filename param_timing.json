@@ -1,0 +1,27 @@
+[
+  {
+    "label": "Plain GCN (hidden=128, L=2)",
+    "params": 19852,
+    "inference_ms": 1318.5406525929768
+  },
+  {
+    "label": "Plain GCN (hidden=256, L=4)",
+    "params": 205068,
+    "inference_ms": 1174.039363861084
+  },
+  {
+    "label": "MoE-GCN (E=4, K=1)",
+    "params": 469264,
+    "inference_ms": 1499.6235370635986
+  },
+  {
+    "label": "MoE-GCN (E=8, K=2)",
+    "params": 733460,
+    "inference_ms": 1647.8411356608074
+  },
+  {
+    "label": "MoE-GCN (E=16, K=4)",
+    "params": 1261852,
+    "inference_ms": 1658.3664417266846
+  }
+]

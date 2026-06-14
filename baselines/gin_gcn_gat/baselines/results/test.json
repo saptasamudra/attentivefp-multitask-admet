@@ -1,0 +1,12 @@
+[
+  {
+    "model": "GIN",
+    "dataset": "BBBP",
+    "seed": 0,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.9305828100470958,
+    "test": 0.6626454320045776,
+    "best_epoch": 30
+  }
+]

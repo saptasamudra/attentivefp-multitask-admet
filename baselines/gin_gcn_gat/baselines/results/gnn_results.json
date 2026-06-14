@@ -1,0 +1,1352 @@
+[
+  {
+    "model": "GIN",
+    "dataset": "ESOL",
+    "seed": 0,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 0.8960036773776476,
+    "test": 0.8878589642943031,
+    "best_epoch": 35
+  },
+  {
+    "model": "GIN",
+    "dataset": "ESOL",
+    "seed": 1,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 1.0282438563138514,
+    "test": 1.0174515951204195,
+    "best_epoch": 34
+  },
+  {
+    "model": "GIN",
+    "dataset": "ESOL",
+    "seed": 2,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 0.9714868708855717,
+    "test": 0.9364047010012068,
+    "best_epoch": 34
+  },
+  {
+    "model": "GIN",
+    "dataset": "ESOL",
+    "seed": 3,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 0.9330619031316645,
+    "test": 0.8931456583355436,
+    "best_epoch": 48
+  },
+  {
+    "model": "GIN",
+    "dataset": "ESOL",
+    "seed": 4,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 0.8763279034843073,
+    "test": 1.0009503616997768,
+    "best_epoch": 96
+  },
+  {
+    "model": "GIN",
+    "dataset": "FreeSolv",
+    "seed": 0,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 1.6758703817214435,
+    "test": 1.9843653881410912,
+    "best_epoch": 15
+  },
+  {
+    "model": "GIN",
+    "dataset": "FreeSolv",
+    "seed": 1,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 1.6138475361726015,
+    "test": 2.439712498408396,
+    "best_epoch": 17
+  },
+  {
+    "model": "GIN",
+    "dataset": "FreeSolv",
+    "seed": 3,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 1.6536836714933631,
+    "test": 2.0470790615719197,
+    "best_epoch": 50
+  },
+  {
+    "model": "GIN",
+    "dataset": "FreeSolv",
+    "seed": 4,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 1.5702444792481758,
+    "test": 2.5733715278215534,
+    "best_epoch": 14
+  },
+  {
+    "model": "GIN",
+    "dataset": "Lipo",
+    "seed": 0,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 0.7400087601555566,
+    "test": 0.7903731763059423,
+    "best_epoch": 54
+  },
+  {
+    "model": "GIN",
+    "dataset": "Lipo",
+    "seed": 1,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 0.7422330340421567,
+    "test": 0.8016633176700592,
+    "best_epoch": 27
+  },
+  {
+    "model": "GIN",
+    "dataset": "Lipo",
+    "seed": 2,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 0.7617578740953964,
+    "test": 0.8203195844071878,
+    "best_epoch": 36
+  },
+  {
+    "model": "GIN",
+    "dataset": "Lipo",
+    "seed": 3,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 0.7655446535886614,
+    "test": 0.8186667873232853,
+    "best_epoch": 18
+  },
+  {
+    "model": "GIN",
+    "dataset": "Lipo",
+    "seed": 4,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 0.7660757022780377,
+    "test": 0.7600155691384185,
+    "best_epoch": 51
+  },
+  {
+    "model": "GIN",
+    "dataset": "BACE",
+    "seed": 0,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.7132196162046909,
+    "test": 0.8402173913043479,
+    "best_epoch": 32
+  },
+  {
+    "model": "GIN",
+    "dataset": "BACE",
+    "seed": 1,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.7094882729211087,
+    "test": 0.8335144927536232,
+    "best_epoch": 43
+  },
+  {
+    "model": "GIN",
+    "dataset": "BACE",
+    "seed": 2,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.7201492537313432,
+    "test": 0.8567028985507247,
+    "best_epoch": 23
+  },
+  {
+    "model": "GIN",
+    "dataset": "BACE",
+    "seed": 3,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.6995380241648899,
+    "test": 0.7889492753623188,
+    "best_epoch": 61
+  },
+  {
+    "model": "GIN",
+    "dataset": "BACE",
+    "seed": 4,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.7178393745557925,
+    "test": 0.8244565217391304,
+    "best_epoch": 35
+  },
+  {
+    "model": "GIN",
+    "dataset": "BBBP",
+    "seed": 0,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.9305828100470958,
+    "test": 0.6626454320045776,
+    "best_epoch": 30
+  },
+  {
+    "model": "GIN",
+    "dataset": "BBBP",
+    "seed": 1,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.9416208791208791,
+    "test": 0.561415220293725,
+    "best_epoch": 8
+  },
+  {
+    "model": "GIN",
+    "dataset": "BBBP",
+    "seed": 2,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.9440737833594977,
+    "test": 0.6969292389853138,
+    "best_epoch": 7
+  },
+  {
+    "model": "GIN",
+    "dataset": "BBBP",
+    "seed": 3,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.9375,
+    "test": 0.6571619301926377,
+    "best_epoch": 14
+  },
+  {
+    "model": "GIN",
+    "dataset": "BBBP",
+    "seed": 4,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.9406397174254317,
+    "test": 0.6531565897386992,
+    "best_epoch": 6
+  },
+  {
+    "model": "GIN",
+    "dataset": "HIV",
+    "seed": 0,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.7652667138319995,
+    "test": 0.7665823127149094,
+    "best_epoch": 33
+  },
+  {
+    "model": "GIN",
+    "dataset": "HIV",
+    "seed": 1,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.8021613360652474,
+    "test": 0.7352731522621025,
+    "best_epoch": 66
+  },
+  {
+    "model": "GIN",
+    "dataset": "HIV",
+    "seed": 2,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.7992808818079635,
+    "test": 0.7066723331916702,
+    "best_epoch": 45
+  },
+  {
+    "model": "GIN",
+    "dataset": "HIV",
+    "seed": 3,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.8040617314577457,
+    "test": 0.7364611907429588,
+    "best_epoch": 30
+  },
+  {
+    "model": "GIN",
+    "dataset": "HIV",
+    "seed": 4,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.788256750921102,
+    "test": 0.7735231619209522,
+    "best_epoch": 32
+  },
+  {
+    "model": "GIN",
+    "dataset": "ClinTox",
+    "seed": 0,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.95217938838706,
+    "test": 0.8403650992249678,
+    "best_epoch": 3
+  },
+  {
+    "model": "GIN",
+    "dataset": "ClinTox",
+    "seed": 1,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.9807443954507185,
+    "test": 0.803776109547145,
+    "best_epoch": 4
+  },
+  {
+    "model": "GIN",
+    "dataset": "ClinTox",
+    "seed": 2,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.9696744295560598,
+    "test": 0.8737323184930317,
+    "best_epoch": 21
+  },
+  {
+    "model": "GIN",
+    "dataset": "ClinTox",
+    "seed": 3,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.9873853047362188,
+    "test": 0.8886959997219616,
+    "best_epoch": 30
+  },
+  {
+    "model": "GIN",
+    "dataset": "ClinTox",
+    "seed": 4,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.9837589365983133,
+    "test": 0.8734334271713065,
+    "best_epoch": 20
+  },
+  {
+    "model": "GIN",
+    "dataset": "Tox21",
+    "seed": 0,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.7710028502912322,
+    "test": 0.7095054126658377,
+    "best_epoch": 29
+  },
+  {
+    "model": "GIN",
+    "dataset": "Tox21",
+    "seed": 1,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.7594090886520527,
+    "test": 0.6854872430962979,
+    "best_epoch": 14
+  },
+  {
+    "model": "GIN",
+    "dataset": "Tox21",
+    "seed": 2,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.7553956336995741,
+    "test": 0.7075589751697486,
+    "best_epoch": 36
+  },
+  {
+    "model": "GIN",
+    "dataset": "Tox21",
+    "seed": 3,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.760400299015593,
+    "test": 0.6981876391336307,
+    "best_epoch": 28
+  },
+  {
+    "model": "GIN",
+    "dataset": "Tox21",
+    "seed": 4,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.771977618657389,
+    "test": 0.688203306607191,
+    "best_epoch": 38
+  },
+  {
+    "model": "GIN",
+    "dataset": "SIDER",
+    "seed": 0,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.6349095701937827,
+    "test": 0.6110550032177933,
+    "best_epoch": 37
+  },
+  {
+    "model": "GIN",
+    "dataset": "SIDER",
+    "seed": 1,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.6176480613394242,
+    "test": 0.6171590757897327,
+    "best_epoch": 18
+  },
+  {
+    "model": "GIN",
+    "dataset": "SIDER",
+    "seed": 2,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.6402984162804487,
+    "test": 0.5802173628119414,
+    "best_epoch": 51
+  },
+  {
+    "model": "GIN",
+    "dataset": "SIDER",
+    "seed": 3,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.6281721823733606,
+    "test": 0.5788316413355113,
+    "best_epoch": 56
+  },
+  {
+    "model": "GIN",
+    "dataset": "SIDER",
+    "seed": 4,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.6638901885563653,
+    "test": 0.5707967278871097,
+    "best_epoch": 54
+  },
+  {
+    "model": "GCN",
+    "dataset": "ESOL",
+    "seed": 0,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 1.2174052620281608,
+    "test": 1.4175664998489985,
+    "best_epoch": 56
+  },
+  {
+    "model": "GCN",
+    "dataset": "ESOL",
+    "seed": 1,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 1.1768858020872204,
+    "test": 1.330164745495917,
+    "best_epoch": 48
+  },
+  {
+    "model": "GCN",
+    "dataset": "ESOL",
+    "seed": 2,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 1.2132246997867073,
+    "test": 1.4638144984315744,
+    "best_epoch": 47
+  },
+  {
+    "model": "GCN",
+    "dataset": "ESOL",
+    "seed": 3,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 1.1939778574834488,
+    "test": 1.3558193050300438,
+    "best_epoch": 80
+  },
+  {
+    "model": "GCN",
+    "dataset": "ESOL",
+    "seed": 4,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 1.2295232621947976,
+    "test": 1.4439099078776558,
+    "best_epoch": 25
+  },
+  {
+    "model": "GCN",
+    "dataset": "FreeSolv",
+    "seed": 0,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 2.143022739732991,
+    "test": 2.517286711430131,
+    "best_epoch": 39
+  },
+  {
+    "model": "GCN",
+    "dataset": "FreeSolv",
+    "seed": 1,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 2.0209608791515574,
+    "test": 2.2779583109925152,
+    "best_epoch": 10
+  },
+  {
+    "model": "GCN",
+    "dataset": "FreeSolv",
+    "seed": 2,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 2.0727623605724226,
+    "test": 2.530685832883948,
+    "best_epoch": 15
+  },
+  {
+    "model": "GCN",
+    "dataset": "FreeSolv",
+    "seed": 3,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 2.1091891736724127,
+    "test": 2.260492549155785,
+    "best_epoch": 19
+  },
+  {
+    "model": "GCN",
+    "dataset": "FreeSolv",
+    "seed": 4,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 1.77960021597856,
+    "test": 2.2984451843589677,
+    "best_epoch": 22
+  },
+  {
+    "model": "GCN",
+    "dataset": "Lipo",
+    "seed": 0,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 0.6996317235294048,
+    "test": 0.7721401083655196,
+    "best_epoch": 54
+  },
+  {
+    "model": "GCN",
+    "dataset": "Lipo",
+    "seed": 1,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 0.6695308378167146,
+    "test": 0.7829820506424559,
+    "best_epoch": 55
+  },
+  {
+    "model": "GCN",
+    "dataset": "Lipo",
+    "seed": 2,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 0.6918060095349301,
+    "test": 0.7626683893470493,
+    "best_epoch": 63
+  },
+  {
+    "model": "GCN",
+    "dataset": "Lipo",
+    "seed": 3,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 0.6925876674866085,
+    "test": 0.7924198825543731,
+    "best_epoch": 58
+  },
+  {
+    "model": "GCN",
+    "dataset": "Lipo",
+    "seed": 4,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 0.7128224797534845,
+    "test": 0.7483483247451856,
+    "best_epoch": 52
+  },
+  {
+    "model": "GCN",
+    "dataset": "BACE",
+    "seed": 0,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.7245913290689411,
+    "test": 0.8132246376811594,
+    "best_epoch": 60
+  },
+  {
+    "model": "GCN",
+    "dataset": "BACE",
+    "seed": 1,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.7149964463397299,
+    "test": 0.8445652173913044,
+    "best_epoch": 39
+  },
+  {
+    "model": "GCN",
+    "dataset": "BACE",
+    "seed": 2,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.7190831556503199,
+    "test": 0.8228260869565217,
+    "best_epoch": 33
+  },
+  {
+    "model": "GCN",
+    "dataset": "BACE",
+    "seed": 3,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.7199715707178393,
+    "test": 0.8188405797101449,
+    "best_epoch": 44
+  },
+  {
+    "model": "GCN",
+    "dataset": "BACE",
+    "seed": 4,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.7013148542999289,
+    "test": 0.801086956521739,
+    "best_epoch": 20
+  },
+  {
+    "model": "GCN",
+    "dataset": "BBBP",
+    "seed": 0,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.9462323390894819,
+    "test": 0.698931909212283,
+    "best_epoch": 22
+  },
+  {
+    "model": "GCN",
+    "dataset": "BBBP",
+    "seed": 1,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.9465266875981162,
+    "test": 0.6930192637802784,
+    "best_epoch": 12
+  },
+  {
+    "model": "GCN",
+    "dataset": "BBBP",
+    "seed": 2,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.9492739403453688,
+    "test": 0.6836734693877551,
+    "best_epoch": 21
+  },
+  {
+    "model": "GCN",
+    "dataset": "BBBP",
+    "seed": 3,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.9519230769230769,
+    "test": 0.6694640473011635,
+    "best_epoch": 18
+  },
+  {
+    "model": "GCN",
+    "dataset": "BBBP",
+    "seed": 4,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.9383830455259026,
+    "test": 0.6745184054930382,
+    "best_epoch": 8
+  },
+  {
+    "model": "GCN",
+    "dataset": "HIV",
+    "seed": 0,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.8234301447730704,
+    "test": 0.7344318664760655,
+    "best_epoch": 27
+  },
+  {
+    "model": "GCN",
+    "dataset": "HIV",
+    "seed": 1,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.8237027236448388,
+    "test": 0.8044160259629873,
+    "best_epoch": 54
+  },
+  {
+    "model": "GCN",
+    "dataset": "HIV",
+    "seed": 2,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.8119787694748415,
+    "test": 0.7617895916238457,
+    "best_epoch": 65
+  },
+  {
+    "model": "GCN",
+    "dataset": "HIV",
+    "seed": 3,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.8143707256417089,
+    "test": 0.7643878221226288,
+    "best_epoch": 11
+  },
+  {
+    "model": "GCN",
+    "dataset": "HIV",
+    "seed": 4,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.8167167415492893,
+    "test": 0.7683286326932736,
+    "best_epoch": 36
+  },
+  {
+    "model": "GCN",
+    "dataset": "ClinTox",
+    "seed": 0,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.9833575923626867,
+    "test": 0.9163295450596045,
+    "best_epoch": 28
+  },
+  {
+    "model": "GCN",
+    "dataset": "ClinTox",
+    "seed": 1,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.9798114930719066,
+    "test": 0.8963794182045668,
+    "best_epoch": 25
+  },
+  {
+    "model": "GCN",
+    "dataset": "ClinTox",
+    "seed": 2,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.9889853304222498,
+    "test": 0.9060238765509332,
+    "best_epoch": 25
+  },
+  {
+    "model": "GCN",
+    "dataset": "ClinTox",
+    "seed": 3,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.9830918132910942,
+    "test": 0.925947937302332,
+    "best_epoch": 22
+  },
+  {
+    "model": "GCN",
+    "dataset": "ClinTox",
+    "seed": 4,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.9867984502761249,
+    "test": 0.9288091266117541,
+    "best_epoch": 27
+  },
+  {
+    "model": "GCN",
+    "dataset": "Tox21",
+    "seed": 0,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.7820319609444332,
+    "test": 0.7431068908141497,
+    "best_epoch": 12
+  },
+  {
+    "model": "GCN",
+    "dataset": "Tox21",
+    "seed": 1,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.7942318508939334,
+    "test": 0.7312377639666404,
+    "best_epoch": 13
+  },
+  {
+    "model": "GCN",
+    "dataset": "Tox21",
+    "seed": 2,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.7834007789218722,
+    "test": 0.7419925947112257,
+    "best_epoch": 33
+  },
+  {
+    "model": "GCN",
+    "dataset": "Tox21",
+    "seed": 3,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.7873658419720423,
+    "test": 0.7488674630574015,
+    "best_epoch": 12
+  },
+  {
+    "model": "GCN",
+    "dataset": "Tox21",
+    "seed": 4,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.7890487586991606,
+    "test": 0.7479584626370869,
+    "best_epoch": 17
+  },
+  {
+    "model": "GCN",
+    "dataset": "SIDER",
+    "seed": 0,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.6301979835767592,
+    "test": 0.5731766522697,
+    "best_epoch": 47
+  },
+  {
+    "model": "GCN",
+    "dataset": "SIDER",
+    "seed": 1,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.6205785258743076,
+    "test": 0.5613168101757862,
+    "best_epoch": 46
+  },
+  {
+    "model": "GCN",
+    "dataset": "SIDER",
+    "seed": 2,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.618028065784491,
+    "test": 0.5863202551364066,
+    "best_epoch": 47
+  },
+  {
+    "model": "GCN",
+    "dataset": "SIDER",
+    "seed": 3,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.627667767192564,
+    "test": 0.5752262103339884,
+    "best_epoch": 38
+  },
+  {
+    "model": "GCN",
+    "dataset": "SIDER",
+    "seed": 4,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.6137797013748062,
+    "test": 0.5857099328176535,
+    "best_epoch": 30
+  },
+  {
+    "model": "GAT",
+    "dataset": "ESOL",
+    "seed": 0,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 1.1520878911862342,
+    "test": 1.3114212689402693,
+    "best_epoch": 33
+  },
+  {
+    "model": "GAT",
+    "dataset": "ESOL",
+    "seed": 1,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 1.1265747916176707,
+    "test": 1.2585761080262563,
+    "best_epoch": 29
+  },
+  {
+    "model": "GAT",
+    "dataset": "ESOL",
+    "seed": 2,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 1.1958788359133825,
+    "test": 1.3017751201786871,
+    "best_epoch": 22
+  },
+  {
+    "model": "GAT",
+    "dataset": "ESOL",
+    "seed": 3,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 1.1740168516551523,
+    "test": 1.3399423279379254,
+    "best_epoch": 16
+  },
+  {
+    "model": "GAT",
+    "dataset": "ESOL",
+    "seed": 4,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 1.0743402585753168,
+    "test": 1.3267467752708233,
+    "best_epoch": 21
+  },
+  {
+    "model": "GAT",
+    "dataset": "FreeSolv",
+    "seed": 2,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 2.611275717324237,
+    "test": 2.4007977232785285,
+    "best_epoch": 34
+  },
+  {
+    "model": "GAT",
+    "dataset": "FreeSolv",
+    "seed": 3,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 2.663378048673802,
+    "test": 2.276610686683053,
+    "best_epoch": 7
+  },
+  {
+    "model": "GAT",
+    "dataset": "FreeSolv",
+    "seed": 4,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 2.5120724062719666,
+    "test": 2.2937858724257674,
+    "best_epoch": 20
+  },
+  {
+    "model": "GAT",
+    "dataset": "Lipo",
+    "seed": 0,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 0.7207503471307517,
+    "test": 0.7497409134632504,
+    "best_epoch": 41
+  },
+  {
+    "model": "GAT",
+    "dataset": "Lipo",
+    "seed": 1,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 0.6773836839073158,
+    "test": 0.7205672717565504,
+    "best_epoch": 82
+  },
+  {
+    "model": "GAT",
+    "dataset": "Lipo",
+    "seed": 2,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 0.7022972745019865,
+    "test": 0.7650604502162207,
+    "best_epoch": 19
+  },
+  {
+    "model": "GAT",
+    "dataset": "Lipo",
+    "seed": 3,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 0.6854402725498965,
+    "test": 0.7540066508902902,
+    "best_epoch": 77
+  },
+  {
+    "model": "GAT",
+    "dataset": "Lipo",
+    "seed": 4,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 0.6905119548815136,
+    "test": 0.7639015808399721,
+    "best_epoch": 57
+  },
+  {
+    "model": "GAT",
+    "dataset": "BACE",
+    "seed": 0,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.7082444918265814,
+    "test": 0.8268115942028986,
+    "best_epoch": 27
+  },
+  {
+    "model": "GAT",
+    "dataset": "BACE",
+    "seed": 1,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.7249466950959488,
+    "test": 0.7873188405797101,
+    "best_epoch": 33
+  },
+  {
+    "model": "GAT",
+    "dataset": "BACE",
+    "seed": 2,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.7432480454868514,
+    "test": 0.8023550724637681,
+    "best_epoch": 32
+  },
+  {
+    "model": "GAT",
+    "dataset": "BACE",
+    "seed": 3,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.7297441364605544,
+    "test": 0.7884057971014493,
+    "best_epoch": 33
+  },
+  {
+    "model": "GAT",
+    "dataset": "BACE",
+    "seed": 4,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.7350746268656717,
+    "test": 0.8005434782608696,
+    "best_epoch": 46
+  },
+  {
+    "model": "GAT",
+    "dataset": "BBBP",
+    "seed": 0,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.9413265306122448,
+    "test": 0.7016975014304786,
+    "best_epoch": 6
+  },
+  {
+    "model": "GAT",
+    "dataset": "BBBP",
+    "seed": 1,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.9438775510204083,
+    "test": 0.7192447072286858,
+    "best_epoch": 11
+  },
+  {
+    "model": "GAT",
+    "dataset": "BBBP",
+    "seed": 2,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.9535910518053375,
+    "test": 0.6687964905588404,
+    "best_epoch": 14
+  },
+  {
+    "model": "GAT",
+    "dataset": "BBBP",
+    "seed": 3,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.9471153846153846,
+    "test": 0.7086591646004197,
+    "best_epoch": 12
+  },
+  {
+    "model": "GAT",
+    "dataset": "BBBP",
+    "seed": 4,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.9371075353218211,
+    "test": 0.7134274270455846,
+    "best_epoch": 19
+  },
+  {
+    "model": "GAT",
+    "dataset": "HIV",
+    "seed": 0,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.8252769431964007,
+    "test": 0.7479330062202989,
+    "best_epoch": 22
+  },
+  {
+    "model": "GAT",
+    "dataset": "HIV",
+    "seed": 1,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.8360085877658028,
+    "test": 0.7754819765869487,
+    "best_epoch": 25
+  },
+  {
+    "model": "GAT",
+    "dataset": "HIV",
+    "seed": 2,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.8432732741010257,
+    "test": 0.743889811845613,
+    "best_epoch": 20
+  },
+  {
+    "model": "GAT",
+    "dataset": "HIV",
+    "seed": 3,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.8343731145351918,
+    "test": 0.7223467140594213,
+    "best_epoch": 26
+  },
+  {
+    "model": "GAT",
+    "dataset": "HIV",
+    "seed": 4,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.8413682846825987,
+    "test": 0.7807421859908048,
+    "best_epoch": 29
+  },
+  {
+    "model": "GAT",
+    "dataset": "ClinTox",
+    "seed": 0,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.9871444981948427,
+    "test": 0.9011642859625344,
+    "best_epoch": 27
+  },
+  {
+    "model": "GAT",
+    "dataset": "ClinTox",
+    "seed": 1,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.9905050872611556,
+    "test": 0.8871720015292115,
+    "best_epoch": 13
+  },
+  {
+    "model": "GAT",
+    "dataset": "ClinTox",
+    "seed": 2,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.9897576951068111,
+    "test": 0.8775275431828451,
+    "best_epoch": 14
+  },
+  {
+    "model": "GAT",
+    "dataset": "ClinTox",
+    "seed": 3,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.977118027312813,
+    "test": 0.9150783720849408,
+    "best_epoch": 12
+  },
+  {
+    "model": "GAT",
+    "dataset": "ClinTox",
+    "seed": 4,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.981837835523781,
+    "test": 0.8863352796024051,
+    "best_epoch": 21
+  },
+  {
+    "model": "GAT",
+    "dataset": "Tox21",
+    "seed": 0,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.7912356109911176,
+    "test": 0.7384323054136591,
+    "best_epoch": 13
+  },
+  {
+    "model": "GAT",
+    "dataset": "Tox21",
+    "seed": 1,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.7939755379312494,
+    "test": 0.7520037789150508,
+    "best_epoch": 14
+  },
+  {
+    "model": "GAT",
+    "dataset": "Tox21",
+    "seed": 2,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.7856812028648844,
+    "test": 0.731498720296312,
+    "best_epoch": 10
+  },
+  {
+    "model": "GAT",
+    "dataset": "Tox21",
+    "seed": 3,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.7886642676364071,
+    "test": 0.7497196151906066,
+    "best_epoch": 27
+  },
+  {
+    "model": "GAT",
+    "dataset": "Tox21",
+    "seed": 4,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.7897878198527364,
+    "test": 0.744560159969466,
+    "best_epoch": 30
+  },
+  {
+    "model": "GAT",
+    "dataset": "SIDER",
+    "seed": 0,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.598597803919384,
+    "test": 0.6031437300410759,
+    "best_epoch": 21
+  },
+  {
+    "model": "GAT",
+    "dataset": "SIDER",
+    "seed": 1,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.6373095866101143,
+    "test": 0.5776025021547343,
+    "best_epoch": 28
+  },
+  {
+    "model": "GAT",
+    "dataset": "SIDER",
+    "seed": 2,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.6277262847258918,
+    "test": 0.6014458766412455,
+    "best_epoch": 17
+  },
+  {
+    "model": "GAT",
+    "dataset": "SIDER",
+    "seed": 3,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.6176939335956488,
+    "test": 0.6043820480531458,
+    "best_epoch": 13
+  },
+  {
+    "model": "GAT",
+    "dataset": "SIDER",
+    "seed": 4,
+    "task_type": "classification",
+    "metric": "AUC",
+    "best_valid": 0.6310347792821981,
+    "test": 0.5802598389473602,
+    "best_epoch": 66
+  },
+  {
+    "model": "GIN",
+    "dataset": "FreeSolv",
+    "seed": 2,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 1.9134657571847105,
+    "test": 2.5861831041315892,
+    "best_epoch": 25
+  },
+  {
+    "model": "GAT",
+    "dataset": "FreeSolv",
+    "seed": 0,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 2.786483469817016,
+    "test": 2.067990595259393,
+    "best_epoch": 47
+  },
+  {
+    "model": "GAT",
+    "dataset": "FreeSolv",
+    "seed": 1,
+    "task_type": "regression",
+    "metric": "RMSE",
+    "best_valid": 2.744751864198385,
+    "test": 2.285508557410651,
+    "best_epoch": 29
+  }
+]

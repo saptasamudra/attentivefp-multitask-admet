@@ -1,0 +1,89 @@
+====================================================================
+                    WHERE TO PUT THE FILES
+====================================================================
+
+YOUR COMPUTER
+│
+└─── D:\
+     │
+     └─── molprop_project\
+          │
+          ├─── data\
+          │    └─── moleculenet\          ← YOUR CSV FILES ARE HERE
+          │         ├─── ESOL.csv
+          │         ├─── FreeSolv.csv
+          │         ├─── Lipo.csv
+          │         ├─── BACE.csv
+          │         ├─── BBBP.csv
+          │         ├─── HIV.csv
+          │         ├─── ClinTox.csv
+          │         ├─── Tox21.csv
+          │         └─── SIDER.csv
+          │
+          └─── baselines\               ← CREATE THIS FOLDER
+               │
+               └─── gin_gcn_gat\        ← CREATE THIS FOLDER
+                    │
+                    ├─── gnn_baselines.py              ← COPY FILE HERE
+                    ├─── run_all_experiments.py        ← COPY FILE HERE
+                    ├─── aggregate_gnn_results.py      ← COPY FILE HERE
+                    ├─── generate_baseline_table.py    ← COPY FILE HERE
+                    ├─── SIMPLE_SETUP_GUIDE.md         ← COPY FILE HERE
+                    │
+                    ├─── baselines\                ← CREATE THIS FOLDER
+                    │    ├─── saved_models\        ← CREATE THIS FOLDER
+                    │    └─── results\             ← CREATE THIS FOLDER
+                    │
+                    └─── logs\                     ← CREATE THIS FOLDER
+
+====================================================================
+                    WHAT EACH FILE DOES
+====================================================================
+
+gnn_baselines.py
+    → The main code that trains GIN, GCN, and GAT models
+    → You don't need to edit this
+
+run_all_experiments.py
+    → Runs all 135 experiments automatically
+    → EDIT LINE 18 to point to your data folder
+
+aggregate_gnn_results.py
+    → Analyzes results after experiments finish
+    → You don't need to edit this
+
+generate_baseline_table.py
+    → Makes a nice comparison table for your paper
+    → You don't need to edit this
+
+SIMPLE_SETUP_GUIDE.md
+    → Instructions (this file)
+
+====================================================================
+                    QUICK COPY-PASTE COMMANDS
+====================================================================
+
+Copy these commands into Command Prompt (one at a time):
+
+cd D:\molprop_project
+mkdir baselines
+cd baselines
+mkdir gin_gcn_gat
+cd gin_gcn_gat
+mkdir baselines
+cd baselines
+mkdir saved_models
+mkdir results
+cd ..
+mkdir logs
+cd ..
+cd ..
+
+====================================================================
+
+Now your folders are ready!
+Next: Copy the 5 files into D:\molprop_project\baselines\gin_gcn_gat\
+Then: Edit line 18 of run_all_experiments.py
+Then: Run it!
+
+====================================================================

@@ -1,0 +1,1 @@
+RF + ECFP4 on BACE: AUC = 0.8864

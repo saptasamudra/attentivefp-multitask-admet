@@ -1,0 +1,2 @@
+Task,Mean rmse,Standard deviation rmse,Fold 0 rmse,Fold 1 rmse,Fold 2 rmse
+measured log solubility in mols per litre,0.8985941800697402,0.19994122387148502,0.7045560082826309,0.817493557839859,1.1737329740867313

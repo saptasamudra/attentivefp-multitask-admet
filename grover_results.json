@@ -1,0 +1,44 @@
+{
+  "BBBP": {
+    "mean": NaN,
+    "std": 0.0,
+    "metric": "roc_auc",
+    "model": "GROVER_base"
+  },
+  "BACE": {
+    "mean": NaN,
+    "std": 0.0,
+    "metric": "roc_auc",
+    "model": "GROVER_base"
+  },
+  "Tox21": {
+    "mean": 0.632629,
+    "std": 0.0,
+    "metric": "roc_auc",
+    "model": "GROVER_base"
+  },
+  "SIDER": {
+    "mean": 0.543949,
+    "std": 0.0,
+    "metric": "roc_auc",
+    "model": "GROVER_base"
+  },
+  "ESOL": {
+    "mean": 2.112066,
+    "std": 0.0,
+    "metric": "rmse",
+    "model": "GROVER_base"
+  },
+  "FreeSolv": {
+    "mean": 4.722061,
+    "std": 0.0,
+    "metric": "rmse",
+    "model": "GROVER_base"
+  },
+  "Lipo": {
+    "mean": 0.938298,
+    "std": 0.0,
+    "metric": "rmse",
+    "model": "GROVER_base"
+  }
+}
