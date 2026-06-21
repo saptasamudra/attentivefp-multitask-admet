@@ -1,0 +1,82 @@
+{
+  "Solubility": {
+    "pharma": 0.8317,
+    "random": 0.9517,
+    "gain": 12.6,
+    "p_t": 0.0844,
+    "verdict": "MARGINAL",
+    "metric": "MAE"
+  },
+  "Caco-2": {
+    "pharma": 0.3647,
+    "random": 0.3582,
+    "gain": -1.8,
+    "p_t": 0.7617,
+    "verdict": "NO ADV",
+    "metric": "MAE"
+  },
+  "Lipophilicity": {
+    "pharma": 0.5571,
+    "random": 0.5354,
+    "gain": -4.1,
+    "p_t": 0.0006,
+    "verdict": "NO ADV",
+    "metric": "MAE"
+  },
+  "LD50": {
+    "pharma": 0.6482,
+    "random": 0.6524,
+    "gain": 0.7,
+    "p_t": 0.8075,
+    "verdict": "MARGINAL",
+    "metric": "MAE"
+  },
+  "VDss": {
+    "pharma": 0.4962,
+    "random": 0.4933,
+    "gain": 0.6,
+    "p_t": 0.8579,
+    "verdict": "MARGINAL",
+    "metric": "Spearman"
+  },
+  "Half-Life": {
+    "pharma": 0.3152,
+    "random": 0.3266,
+    "gain": -3.5,
+    "p_t": 0.5585,
+    "verdict": "NO ADV",
+    "metric": "Spearman"
+  },
+  "BBB": {
+    "pharma": 0.8785,
+    "random": 0.8667,
+    "gain": 1.4,
+    "p_t": 0.0607,
+    "verdict": "MARGINAL",
+    "metric": "AUROC"
+  },
+  "hERG": {
+    "pharma": 0.7364,
+    "random": 0.6753,
+    "gain": 9.0,
+    "p_t": 0.0157,
+    "verdict": "PHARMA",
+    "metric": "AUROC"
+  },
+  "AMES": {
+    "pharma": 0.8337,
+    "random": 0.8347,
+    "gain": -0.1,
+    "p_t": 0.6005,
+    "verdict": "NO ADV",
+    "metric": "AUROC"
+  },
+  "DILI": {
+    "pharma": 0.93,
+    "random": 0.8969,
+    "gain": 3.7,
+    "p_t": 0.1406,
+    "verdict": "MARGINAL",
+    "metric": "AUROC"
+  }
+}

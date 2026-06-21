@@ -1,0 +1,32 @@
+{
+  "Solubility": {
+    "Standard MoE": {
+      "mean_sec": 92.4,
+      "std_sec": 3.709,
+      "n_params": 651405,
+      "per_epoch_ms": 1848.01
+    },
+    "PharmaGuidedMoE": {
+      "mean_sec": 103.381,
+      "std_sec": 1.623,
+      "n_params": 651438,
+      "per_epoch_ms": 2067.61
+    },
+    "overhead_pct": 11.88
+  },
+  "hERG": {
+    "Standard MoE": {
+      "mean_sec": 7.239,
+      "std_sec": 0.056,
+      "n_params": 651405,
+      "per_epoch_ms": 144.79
+    },
+    "PharmaGuidedMoE": {
+      "mean_sec": 7.078,
+      "std_sec": 0.043,
+      "n_params": 651438,
+      "per_epoch_ms": 141.56
+    },
+    "overhead_pct": -2.22
+  }
+}
