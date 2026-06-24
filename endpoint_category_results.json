@@ -1,0 +1,102 @@
+{
+  "Physicochemical": {
+    "mean_gain": 14.556,
+    "std_gain": 9.668,
+    "n": 6,
+    "datasets": [
+      "caco2_wang",
+      "lipophilicity_astrazeneca",
+      "solubility_aqsoldb",
+      "ESOL",
+      "FreeSolv",
+      "Lipo"
+    ],
+    "gains": [
+      20.514,
+      8.747,
+      8.76,
+      19.474,
+      29.642,
+      0.196
+    ]
+  },
+  "Absorption/Transport": {
+    "mean_gain": 1.205,
+    "std_gain": 1.393,
+    "n": 5,
+    "datasets": [
+      "hia_hou",
+      "pgp_broccatelli",
+      "bioavailability_ma",
+      "bbb_martins",
+      "ppbr_az"
+    ],
+    "gains": [
+      1.054,
+      0.463,
+      3.705,
+      -0.49,
+      1.295
+    ]
+  },
+  "Distribution": {
+    "mean_gain": 6.31,
+    "std_gain": 0.0,
+    "n": 1,
+    "datasets": [
+      "vdss_lombardo"
+    ],
+    "gains": [
+      6.31
+    ]
+  },
+  "Metabolic/Enzymatic": {
+    "mean_gain": -7.309,
+    "std_gain": 15.063,
+    "n": 6,
+    "datasets": [
+      "half_life_obach",
+      "clearance_hepatocyte_az",
+      "clearance_microsome_az",
+      "cyp2c9_substrate_carbonmangels",
+      "cyp2d6_substrate_carbonmangels",
+      "cyp3a4_substrate_carbonmangels"
+    ],
+    "gains": [
+      -36.701,
+      -11.407,
+      12.9,
+      -0.231,
+      -2.999,
+      -5.418
+    ]
+  },
+  "CYP Inhibition": {
+    "mean_gain": -0.121,
+    "std_gain": 1.744,
+    "n": 3,
+    "datasets": [
+      "cyp2d6_veith",
+      "cyp3a4_veith",
+      "cyp2c9_veith"
+    ],
+    "gains": [
+      -2.404,
+      1.83,
+      0.211
+    ]
+  },
+  "Toxicity": {
+    "mean_gain": -1.293,
+    "std_gain": 6.075,
+    "n": 2,
+    "datasets": [
+      "ld50_zhu",
+      "herg"
+    ],
+    "gains": [
+      4.782,
+      -7.368
+    ]
+  }
+}

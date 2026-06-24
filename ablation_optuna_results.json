@@ -1,0 +1,191 @@
+{
+  "ESOL": {
+    "moe": {
+      "label": "MoE-GCN (routing)",
+      "mean": 1.0869,
+      "std": 0.03,
+      "seeds": [
+        1.0561,
+        1.077,
+        1.1276
+      ],
+      "best_params": {
+        "hidden": 256,
+        "num_layers": 3,
+        "dropout": 0.1321323894932423,
+        "lr": 0.0009671146625224447,
+        "wd": 1.124861336672479e-06,
+        "num_experts": 4,
+        "top_k": 3
+      },
+      "best_val": 1.1437,
+      "n_params": 400133
+    },
+    "dense_uniform": {
+      "label": "Dense-uniform (no route)",
+      "mean": 1.138,
+      "std": 0.0385,
+      "seeds": [
+        1.0969,
+        1.1275,
+        1.1895
+      ],
+      "best_params": {
+        "hidden": 256,
+        "num_layers": 4,
+        "dropout": 0.21870215041229618,
+        "lr": 0.0005905685925060639,
+        "wd": 1.4063366777718187e-06,
+        "num_experts": 16
+      },
+      "best_val": 1.1684,
+      "n_params": 1254913
+    },
+    "dense_wide": {
+      "label": "Dense-wide (no route)",
+      "mean": 1.0743,
+      "std": 0.0384,
+      "seeds": [
+        1.0381,
+        1.0573,
+        1.1274
+      ],
+      "best_params": {
+        "hidden": 256,
+        "num_layers": 4,
+        "dropout": 0.29484853652022414,
+        "lr": 0.00044999994025594333,
+        "wd": 2.914093659437748e-05,
+        "num_experts": 16
+      },
+      "best_val": 1.1221,
+      "n_params": 2303745
+    }
+  },
+  "FreeSolv": {
+    "moe": {
+      "label": "MoE-GCN (routing)",
+      "mean": 3.0308,
+      "std": 0.1392,
+      "seeds": [
+        2.9997,
+        2.8781,
+        3.2147
+      ],
+      "best_params": {
+        "hidden": 256,
+        "num_layers": 3,
+        "dropout": 0.22908057488008715,
+        "lr": 0.0009406231795722673,
+        "wd": 1.124861336672479e-06,
+        "num_experts": 4,
+        "top_k": 3
+      },
+      "best_val": 3.7821,
+      "n_params": 400133
+    },
+    "dense_uniform": {
+      "label": "Dense-uniform (no route)",
+      "mean": 3.0823,
+      "std": 0.2083,
+      "seeds": [
+        2.8702,
+        3.3654,
+        3.0114
+      ],
+      "best_params": {
+        "hidden": 256,
+        "num_layers": 4,
+        "dropout": 0.2910959278840921,
+        "lr": 0.0009971578511513593,
+        "wd": 3.1996148569006656e-05,
+        "num_experts": 16
+      },
+      "best_val": 3.8704,
+      "n_params": 1254913
+    },
+    "dense_wide": {
+      "label": "Dense-wide (no route)",
+      "mean": 3.1062,
+      "std": 0.1753,
+      "seeds": [
+        3.0496,
+        2.9255,
+        3.3436
+      ],
+      "best_params": {
+        "hidden": 256,
+        "num_layers": 4,
+        "dropout": 0.29484853652022414,
+        "lr": 0.00044999994025594333,
+        "wd": 2.914093659437748e-05,
+        "num_experts": 16
+      },
+      "best_val": 3.8565,
+      "n_params": 2303745
+    }
+  },
+  "Lipo": {
+    "moe": {
+      "label": "MoE-GCN (routing)",
+      "mean": 0.7475,
+      "std": 0.0064,
+      "seeds": [
+        0.7561,
+        0.7455,
+        0.741
+      ],
+      "best_params": {
+        "hidden": 256,
+        "num_layers": 4,
+        "dropout": 0.16838315927084888,
+        "lr": 0.0005901564798023387,
+        "wd": 9.71831994481741e-06,
+        "num_experts": 4,
+        "top_k": 1
+      },
+      "best_val": 0.8007,
+      "n_params": 466437
+    },
+    "dense_uniform": {
+      "label": "Dense-uniform (no route)",
+      "mean": 0.7453,
+      "std": 0.025,
+      "seeds": [
+        0.7133,
+        0.7483,
+        0.7743
+      ],
+      "best_params": {
+        "hidden": 256,
+        "num_layers": 4,
+        "dropout": 0.29895798560352255,
+        "lr": 0.000934106119337791,
+        "wd": 3.051955572001509e-05,
+        "num_experts": 16
+      },
+      "best_val": 0.7824,
+      "n_params": 1254913
+    },
+    "dense_wide": {
+      "label": "Dense-wide (no route)",
+      "mean": 0.7816,
+      "std": 0.0065,
+      "seeds": [
+        0.7752,
+        0.7906,
+        0.7791
+      ],
+      "best_params": {
+        "hidden": 256,
+        "num_layers": 4,
+        "dropout": 0.29086113323635965,
+        "lr": 0.0008788024316573399,
+        "wd": 2.6936379642822978e-05,
+        "num_experts": 16
+      },
+      "best_val": 0.8214,
+      "n_params": 2303745
+    }
+  }
+}

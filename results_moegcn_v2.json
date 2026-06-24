@@ -1,0 +1,354 @@
+{
+  "solubility_aqsoldb": {
+    "display": "Solubility",
+    "task": "regression",
+    "metric": "mae",
+    "mean_perf": 0.9089,
+    "std_perf": 0.0362,
+    "seed_perfs": [
+      0.8891,
+      0.9278,
+      0.8898,
+      0.8676,
+      0.97
+    ],
+    "routing_score": 0.1235,
+    "n_experts": 5.4
+  },
+  "caco2_wang": {
+    "display": "Caco-2",
+    "task": "regression",
+    "metric": "mae",
+    "mean_perf": 0.3636,
+    "std_perf": 0.0142,
+    "seed_perfs": [
+      0.3487,
+      0.3884,
+      0.3568,
+      0.3543,
+      0.3697
+    ],
+    "routing_score": 0.177,
+    "n_experts": 6.2
+  },
+  "lipophilicity_astrazeneca": {
+    "display": "Lipophilicity",
+    "task": "regression",
+    "metric": "mae",
+    "mean_perf": 0.5484,
+    "std_perf": 0.023,
+    "seed_perfs": [
+      0.5294,
+      0.5279,
+      0.5552,
+      0.5901,
+      0.5395
+    ],
+    "routing_score": 0.0424,
+    "n_experts": 3.4
+  },
+  "ppbr_az": {
+    "display": "PPBR",
+    "task": "regression",
+    "metric": "mae",
+    "mean_perf": 9.354,
+    "std_perf": 0.1786,
+    "seed_perfs": [
+      9.5203,
+      9.3368,
+      9.1952,
+      9.1283,
+      9.5893
+    ],
+    "routing_score": 0.0,
+    "n_experts": 1.0
+  },
+  "ld50_zhu": {
+    "display": "LD50",
+    "task": "regression",
+    "metric": "mae",
+    "mean_perf": 0.6624,
+    "std_perf": 0.0135,
+    "seed_perfs": [
+      0.6682,
+      0.6588,
+      0.6396,
+      0.6808,
+      0.6644
+    ],
+    "routing_score": 0.1497,
+    "n_experts": 5.6
+  },
+  "vdss_lombardo": {
+    "display": "VDss",
+    "task": "regression",
+    "metric": "spearman",
+    "mean_perf": 0.4889,
+    "std_perf": 0.0482,
+    "seed_perfs": [
+      0.5465,
+      0.4374,
+      0.5405,
+      0.4861,
+      0.4342
+    ],
+    "routing_score": 0.0498,
+    "n_experts": 3.8
+  },
+  "half_life_obach": {
+    "display": "Half-Life",
+    "task": "regression",
+    "metric": "spearman",
+    "mean_perf": 0.3145,
+    "std_perf": 0.0252,
+    "seed_perfs": [
+      0.3032,
+      0.279,
+      0.3327,
+      0.3059,
+      0.3517
+    ],
+    "routing_score": 0.0934,
+    "n_experts": 4.0
+  },
+  "clearance_microsome_az": {
+    "display": "CL-Microsome",
+    "task": "regression",
+    "metric": "spearman",
+    "mean_perf": 0.5407,
+    "std_perf": 0.008,
+    "seed_perfs": [
+      0.5418,
+      0.5366,
+      0.5549,
+      0.5394,
+      0.5307
+    ],
+    "routing_score": 0.0054,
+    "n_experts": 2.0
+  },
+  "clearance_hepatocyte_az": {
+    "display": "CL-Hepatocyte",
+    "task": "regression",
+    "metric": "spearman",
+    "mean_perf": 0.3437,
+    "std_perf": 0.0092,
+    "seed_perfs": [
+      0.3429,
+      0.3437,
+      0.3276,
+      0.3488,
+      0.3554
+    ],
+    "routing_score": 0.0233,
+    "n_experts": 2.0
+  },
+  "hia_hou": {
+    "display": "HIA",
+    "task": "classification",
+    "metric": "auroc",
+    "mean_perf": 0.9407,
+    "std_perf": 0.0114,
+    "seed_perfs": [
+      0.9416,
+      0.9276,
+      0.9337,
+      0.9391,
+      0.9613
+    ],
+    "routing_score": 0.2612,
+    "n_experts": 10.0
+  },
+  "pgp_broccatelli": {
+    "display": "PGP",
+    "task": "classification",
+    "metric": "auroc",
+    "mean_perf": 0.8898,
+    "std_perf": 0.0105,
+    "seed_perfs": [
+      0.8746,
+      0.885,
+      0.8862,
+      0.9031,
+      0.9002
+    ],
+    "routing_score": 0.2039,
+    "n_experts": 3.8
+  },
+  "bioavailability_ma": {
+    "display": "Bioavailability",
+    "task": "classification",
+    "metric": "auroc",
+    "mean_perf": 0.6181,
+    "std_perf": 0.0093,
+    "seed_perfs": [
+      0.6262,
+      0.6036,
+      0.6209,
+      0.6116,
+      0.6282
+    ],
+    "routing_score": 0.0662,
+    "n_experts": 4.0
+  },
+  "bbb_martins": {
+    "display": "BBB",
+    "task": "classification",
+    "metric": "auroc",
+    "mean_perf": 0.8582,
+    "std_perf": 0.0151,
+    "seed_perfs": [
+      0.8464,
+      0.8709,
+      0.8398,
+      0.8801,
+      0.8538
+    ],
+    "routing_score": 0.2728,
+    "n_experts": 11.0
+  },
+  "cyp2d6_veith": {
+    "display": "CYP2D6 Inh",
+    "task": "classification",
+    "metric": "auroc",
+    "mean_perf": 0.8347,
+    "std_perf": 0.0046,
+    "seed_perfs": [
+      0.8298,
+      0.8404,
+      0.8388,
+      0.8291,
+      0.8355
+    ],
+    "routing_score": 0.079,
+    "n_experts": 4.0
+  },
+  "cyp3a4_veith": {
+    "display": "CYP3A4 Inh",
+    "task": "classification",
+    "metric": "auroc",
+    "mean_perf": 0.8882,
+    "std_perf": 0.0027,
+    "seed_perfs": [
+      0.8862,
+      0.8916,
+      0.8876,
+      0.891,
+      0.8847
+    ],
+    "routing_score": 0.0838,
+    "n_experts": 4.0
+  },
+  "cyp2c9_veith": {
+    "display": "CYP2C9 Inh",
+    "task": "classification",
+    "metric": "auroc",
+    "mean_perf": 0.8797,
+    "std_perf": 0.0017,
+    "seed_perfs": [
+      0.8799,
+      0.8786,
+      0.8801,
+      0.8825,
+      0.8776
+    ],
+    "routing_score": 0.0925,
+    "n_experts": 4.0
+  },
+  "cyp2d6_substrate_carbonmangels": {
+    "display": "CYP2D6 Sub",
+    "task": "classification",
+    "metric": "auroc",
+    "mean_perf": 0.7895,
+    "std_perf": 0.0107,
+    "seed_perfs": [
+      0.8027,
+      0.7735,
+      0.7973,
+      0.793,
+      0.7808
+    ],
+    "routing_score": 0.0856,
+    "n_experts": 4.4
+  },
+  "cyp3a4_substrate_carbonmangels": {
+    "display": "CYP3A4 Sub",
+    "task": "classification",
+    "metric": "auroc",
+    "mean_perf": 0.5728,
+    "std_perf": 0.0166,
+    "seed_perfs": [
+      0.5481,
+      0.5678,
+      0.5662,
+      0.5952,
+      0.5868
+    ],
+    "routing_score": 0.0886,
+    "n_experts": 3.8
+  },
+  "cyp2c9_substrate_carbonmangels": {
+    "display": "CYP2C9 Sub",
+    "task": "classification",
+    "metric": "auroc",
+    "mean_perf": 0.6165,
+    "std_perf": 0.0415,
+    "seed_perfs": [
+      0.5966,
+      0.6883,
+      0.5846,
+      0.5762,
+      0.637
+    ],
+    "routing_score": 0.0991,
+    "n_experts": 8.0
+  },
+  "herg": {
+    "display": "hERG",
+    "task": "classification",
+    "metric": "auroc",
+    "mean_perf": 0.6978,
+    "std_perf": 0.0308,
+    "seed_perfs": [
+      0.7153,
+      0.6377,
+      0.7216,
+      0.714,
+      0.7001
+    ],
+    "routing_score": 0.1552,
+    "n_experts": 5.4
+  },
+  "ames": {
+    "display": "AMES",
+    "task": "classification",
+    "metric": "auroc",
+    "mean_perf": 0.8373,
+    "std_perf": 0.0054,
+    "seed_perfs": [
+      0.8406,
+      0.8272,
+      0.8421,
+      0.8403,
+      0.8363
+    ],
+    "routing_score": 0.2714,
+    "n_experts": 10.6
+  },
+  "dili": {
+    "display": "DILI",
+    "task": "classification",
+    "metric": "auroc",
+    "mean_perf": 0.9158,
+    "std_perf": 0.0085,
+    "seed_perfs": [
+      0.91,
+      0.9265,
+      0.9248,
+      0.9048,
+      0.913
+    ],
+    "routing_score": 0.2076,
+    "n_experts": 8.2
+  }
+}

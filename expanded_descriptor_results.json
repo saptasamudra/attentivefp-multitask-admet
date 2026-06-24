@@ -1,0 +1,422 @@
+[
+  {
+    "dataset": "Caco-2",
+    "tdc_name": "caco2_wang",
+    "n_molecules": 910,
+    "n_active_experts": 3,
+    "n_experts": 4,
+    "descriptors": {
+      "LogP": {
+        "moe": 0.066,
+        "gcn": 0.1639,
+        "delta": -0.0979,
+        "win": "GCN"
+      },
+      "MW": {
+        "moe": 0.1245,
+        "gcn": 0.1056,
+        "delta": 0.0189,
+        "win": "MoE \u2713"
+      },
+      "TPSA": {
+        "moe": 0.0875,
+        "gcn": 0.1103,
+        "delta": -0.0228,
+        "win": "GCN"
+      },
+      "HBD": {
+        "moe": 0.0318,
+        "gcn": 0.0732,
+        "delta": -0.0415,
+        "win": "GCN"
+      },
+      "HBA": {
+        "moe": 0.1076,
+        "gcn": 0.0787,
+        "delta": 0.029,
+        "win": "MoE \u2713"
+      },
+      "RotBonds": {
+        "moe": 0.0238,
+        "gcn": 0.1151,
+        "delta": -0.0913,
+        "win": "GCN"
+      },
+      "ArRings": {
+        "moe": 0.0748,
+        "gcn": 0.4988,
+        "delta": -0.424,
+        "win": "GCN"
+      },
+      "RingCount": {
+        "moe": 0.205,
+        "gcn": 0.0882,
+        "delta": 0.1168,
+        "win": "MoE \u2713"
+      },
+      "HeavyAtoms": {
+        "moe": 0.1155,
+        "gcn": 0.1069,
+        "delta": 0.0085,
+        "win": "MoE \u2713"
+      },
+      "FracCSP3": {
+        "moe": 0.2854,
+        "gcn": 0.6185,
+        "delta": -0.3332,
+        "win": "GCN"
+      },
+      "QED": {
+        "moe": 0.051,
+        "gcn": 0.0777,
+        "delta": -0.0267,
+        "win": "GCN"
+      },
+      "MolRefract": {
+        "moe": 0.1133,
+        "gcn": 0.106,
+        "delta": 0.0072,
+        "win": "MoE \u2713"
+      }
+    },
+    "moe_wins": 5,
+    "gcn_wins": 7,
+    "ties": 0
+  },
+  {
+    "dataset": "AqSolDB",
+    "tdc_name": "solubility_aqsoldb",
+    "n_molecules": 9831,
+    "n_active_experts": 4,
+    "n_experts": 4,
+    "descriptors": {
+      "LogP": {
+        "moe": 0.1892,
+        "gcn": 0.1924,
+        "delta": -0.0033,
+        "win": "tie"
+      },
+      "MW": {
+        "moe": 0.141,
+        "gcn": 0.0625,
+        "delta": 0.0784,
+        "win": "MoE \u2713"
+      },
+      "TPSA": {
+        "moe": 0.0358,
+        "gcn": 0.0706,
+        "delta": -0.0348,
+        "win": "GCN"
+      },
+      "HBD": {
+        "moe": 0.0372,
+        "gcn": 0.0373,
+        "delta": -0.0001,
+        "win": "tie"
+      },
+      "HBA": {
+        "moe": 0.0337,
+        "gcn": 0.0692,
+        "delta": -0.0355,
+        "win": "GCN"
+      },
+      "RotBonds": {
+        "moe": 0.0441,
+        "gcn": 0.0824,
+        "delta": -0.0384,
+        "win": "GCN"
+      },
+      "ArRings": {
+        "moe": 0.1888,
+        "gcn": 0.4037,
+        "delta": -0.215,
+        "win": "GCN"
+      },
+      "RingCount": {
+        "moe": 0.2336,
+        "gcn": 0.2187,
+        "delta": 0.0149,
+        "win": "MoE \u2713"
+      },
+      "HeavyAtoms": {
+        "moe": 0.1601,
+        "gcn": 0.089,
+        "delta": 0.0711,
+        "win": "MoE \u2713"
+      },
+      "FracCSP3": {
+        "moe": 0.1031,
+        "gcn": 0.5308,
+        "delta": -0.4277,
+        "win": "GCN"
+      },
+      "QED": {
+        "moe": 0.0071,
+        "gcn": 0.0899,
+        "delta": -0.0828,
+        "win": "GCN"
+      },
+      "MolRefract": {
+        "moe": 0.1861,
+        "gcn": 0.1085,
+        "delta": 0.0775,
+        "win": "MoE \u2713"
+      }
+    },
+    "moe_wins": 4,
+    "gcn_wins": 6,
+    "ties": 2
+  },
+  {
+    "dataset": "Lipo",
+    "tdc_name": "lipophilicity_astrazeneca",
+    "n_molecules": 4200,
+    "n_active_experts": 9,
+    "n_experts": 16,
+    "descriptors": {
+      "LogP": {
+        "moe": 0.1369,
+        "gcn": 0.1134,
+        "delta": 0.0235,
+        "win": "MoE \u2713"
+      },
+      "MW": {
+        "moe": 0.0794,
+        "gcn": 0.1594,
+        "delta": -0.08,
+        "win": "GCN"
+      },
+      "TPSA": {
+        "moe": 0.059,
+        "gcn": 0.1547,
+        "delta": -0.0956,
+        "win": "GCN"
+      },
+      "HBD": {
+        "moe": 0.0572,
+        "gcn": 0.0918,
+        "delta": -0.0346,
+        "win": "GCN"
+      },
+      "HBA": {
+        "moe": 0.126,
+        "gcn": 0.2998,
+        "delta": -0.1738,
+        "win": "GCN"
+      },
+      "RotBonds": {
+        "moe": 0.0731,
+        "gcn": 0.1626,
+        "delta": -0.0896,
+        "win": "GCN"
+      },
+      "ArRings": {
+        "moe": 0.2146,
+        "gcn": 0.3821,
+        "delta": -0.1675,
+        "win": "GCN"
+      },
+      "RingCount": {
+        "moe": 0.1072,
+        "gcn": 0.2108,
+        "delta": -0.1036,
+        "win": "GCN"
+      },
+      "HeavyAtoms": {
+        "moe": 0.0592,
+        "gcn": 0.1488,
+        "delta": -0.0896,
+        "win": "GCN"
+      },
+      "FracCSP3": {
+        "moe": 0.3487,
+        "gcn": 0.6354,
+        "delta": -0.2867,
+        "win": "GCN"
+      },
+      "QED": {
+        "moe": 0.0135,
+        "gcn": 0.0527,
+        "delta": -0.0392,
+        "win": "GCN"
+      },
+      "MolRefract": {
+        "moe": 0.0703,
+        "gcn": 0.1374,
+        "delta": -0.0671,
+        "win": "GCN"
+      }
+    },
+    "moe_wins": 1,
+    "gcn_wins": 11,
+    "ties": 0
+  },
+  {
+    "dataset": "LD50",
+    "tdc_name": "ld50_zhu",
+    "n_molecules": 7385,
+    "n_active_experts": 4,
+    "n_experts": 4,
+    "descriptors": {
+      "LogP": {
+        "moe": 0.1271,
+        "gcn": 0.0873,
+        "delta": 0.0398,
+        "win": "MoE \u2713"
+      },
+      "MW": {
+        "moe": 0.1403,
+        "gcn": 0.094,
+        "delta": 0.0463,
+        "win": "MoE \u2713"
+      },
+      "TPSA": {
+        "moe": 0.0615,
+        "gcn": 0.0644,
+        "delta": -0.0029,
+        "win": "tie"
+      },
+      "HBD": {
+        "moe": 0.0364,
+        "gcn": 0.0418,
+        "delta": -0.0054,
+        "win": "GCN"
+      },
+      "HBA": {
+        "moe": 0.048,
+        "gcn": 0.0747,
+        "delta": -0.0266,
+        "win": "GCN"
+      },
+      "RotBonds": {
+        "moe": 0.0251,
+        "gcn": 0.0599,
+        "delta": -0.0347,
+        "win": "GCN"
+      },
+      "ArRings": {
+        "moe": 0.4804,
+        "gcn": 0.4795,
+        "delta": 0.001,
+        "win": "tie"
+      },
+      "RingCount": {
+        "moe": 0.3134,
+        "gcn": 0.2792,
+        "delta": 0.0342,
+        "win": "MoE \u2713"
+      },
+      "HeavyAtoms": {
+        "moe": 0.1163,
+        "gcn": 0.107,
+        "delta": 0.0093,
+        "win": "MoE \u2713"
+      },
+      "FracCSP3": {
+        "moe": 0.2219,
+        "gcn": 0.5092,
+        "delta": -0.2873,
+        "win": "GCN"
+      },
+      "QED": {
+        "moe": 0.1101,
+        "gcn": 0.1519,
+        "delta": -0.0418,
+        "win": "GCN"
+      },
+      "MolRefract": {
+        "moe": 0.1044,
+        "gcn": 0.0733,
+        "delta": 0.0311,
+        "win": "MoE \u2713"
+      }
+    },
+    "moe_wins": 5,
+    "gcn_wins": 5,
+    "ties": 2
+  },
+  {
+    "dataset": "Half-Life",
+    "tdc_name": "half_life_obach",
+    "n_molecules": 667,
+    "n_active_experts": 3,
+    "n_experts": 4,
+    "descriptors": {
+      "LogP": {
+        "moe": 0.0932,
+        "gcn": 0.0684,
+        "delta": 0.0248,
+        "win": "MoE \u2713"
+      },
+      "MW": {
+        "moe": 0.0172,
+        "gcn": 0.0215,
+        "delta": -0.0043,
+        "win": "tie"
+      },
+      "TPSA": {
+        "moe": 0.0294,
+        "gcn": 0.038,
+        "delta": -0.0086,
+        "win": "GCN"
+      },
+      "HBD": {
+        "moe": 0.036,
+        "gcn": 0.0277,
+        "delta": 0.0082,
+        "win": "MoE \u2713"
+      },
+      "HBA": {
+        "moe": 0.0159,
+        "gcn": 0.0378,
+        "delta": -0.0219,
+        "win": "GCN"
+      },
+      "RotBonds": {
+        "moe": 0.0081,
+        "gcn": 0.004,
+        "delta": 0.0041,
+        "win": "tie"
+      },
+      "ArRings": {
+        "moe": 0.3193,
+        "gcn": 0.1852,
+        "delta": 0.1341,
+        "win": "MoE \u2713"
+      },
+      "RingCount": {
+        "moe": 0.0457,
+        "gcn": 0.0418,
+        "delta": 0.0039,
+        "win": "tie"
+      },
+      "HeavyAtoms": {
+        "moe": 0.0087,
+        "gcn": 0.0215,
+        "delta": -0.0128,
+        "win": "GCN"
+      },
+      "FracCSP3": {
+        "moe": 0.273,
+        "gcn": 0.0915,
+        "delta": 0.1815,
+        "win": "MoE \u2713"
+      },
+      "QED": {
+        "moe": 0.0685,
+        "gcn": 0.0388,
+        "delta": 0.0297,
+        "win": "MoE \u2713"
+      },
+      "MolRefract": {
+        "moe": 0.0127,
+        "gcn": 0.0194,
+        "delta": -0.0067,
+        "win": "GCN"
+      }
+    },
+    "moe_wins": 5,
+    "gcn_wins": 4,
+    "ties": 3
+  }
+]

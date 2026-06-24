@@ -1,0 +1,12 @@
+{
+  "solubility_aqsoldb": {
+    "display": "Solubility",
+    "metric": "mae",
+    "pharma_mean": 0.8317,
+    "random_mean": 0.9517,
+    "gain_vs_random_pct": 12.61,
+    "t_stat": -2.284,
+    "p_ttest": 0.084409,
+    "w_stat": 1.0,
+    "p_wilcoxon": 0.125,
+    "significant": 

@@ -1,0 +1,222 @@
+[
+  {
+    "dataset": "Caco-2",
+    "tdc_name": "caco2_wang",
+    "descriptor": "MW",
+    "observed_eta2": 0.0964,
+    "p_value": 0.0,
+    "percentile": 100.0,
+    "significance": "***",
+    "n_molecules": 910,
+    "n_active_experts": 3
+  },
+  {
+    "dataset": "Caco-2",
+    "tdc_name": "caco2_wang",
+    "descriptor": "HBA",
+    "observed_eta2": 0.0783,
+    "p_value": 0.0,
+    "percentile": 100.0,
+    "significance": "***",
+    "n_molecules": 910,
+    "n_active_experts": 3
+  },
+  {
+    "dataset": "Caco-2",
+    "tdc_name": "caco2_wang",
+    "descriptor": "RingCount",
+    "observed_eta2": 0.0397,
+    "p_value": 0.0,
+    "percentile": 100.0,
+    "significance": "***",
+    "n_molecules": 910,
+    "n_active_experts": 3
+  },
+  {
+    "dataset": "Caco-2",
+    "tdc_name": "caco2_wang",
+    "descriptor": "HeavyAtoms",
+    "observed_eta2": 0.0822,
+    "p_value": 0.0,
+    "percentile": 100.0,
+    "significance": "***",
+    "n_molecules": 910,
+    "n_active_experts": 3
+  },
+  {
+    "dataset": "Caco-2",
+    "tdc_name": "caco2_wang",
+    "descriptor": "MolRefract",
+    "observed_eta2": 0.075,
+    "p_value": 0.0,
+    "percentile": 100.0,
+    "significance": "***",
+    "n_molecules": 910,
+    "n_active_experts": 3
+  },
+  {
+    "dataset": "AqSolDB",
+    "tdc_name": "solubility_aqsoldb",
+    "descriptor": "MW",
+    "observed_eta2": 0.0858,
+    "p_value": 0.0,
+    "percentile": 100.0,
+    "significance": "***",
+    "n_molecules": 9831,
+    "n_active_experts": 4
+  },
+  {
+    "dataset": "AqSolDB",
+    "tdc_name": "solubility_aqsoldb",
+    "descriptor": "RingCount",
+    "observed_eta2": 0.0891,
+    "p_value": 0.0,
+    "percentile": 100.0,
+    "significance": "***",
+    "n_molecules": 9831,
+    "n_active_experts": 4
+  },
+  {
+    "dataset": "AqSolDB",
+    "tdc_name": "solubility_aqsoldb",
+    "descriptor": "HeavyAtoms",
+    "observed_eta2": 0.0634,
+    "p_value": 0.0,
+    "percentile": 100.0,
+    "significance": "***",
+    "n_molecules": 9831,
+    "n_active_experts": 4
+  },
+  {
+    "dataset": "AqSolDB",
+    "tdc_name": "solubility_aqsoldb",
+    "descriptor": "MolRefract",
+    "observed_eta2": 0.0897,
+    "p_value": 0.0,
+    "percentile": 100.0,
+    "significance": "***",
+    "n_molecules": 9831,
+    "n_active_experts": 4
+  },
+  {
+    "dataset": "LD50",
+    "tdc_name": "ld50_zhu",
+    "descriptor": "LogP",
+    "observed_eta2": 0.0404,
+    "p_value": 0.0,
+    "percentile": 100.0,
+    "significance": "***",
+    "n_molecules": 7385,
+    "n_active_experts": 3
+  },
+  {
+    "dataset": "LD50",
+    "tdc_name": "ld50_zhu",
+    "descriptor": "MW",
+    "observed_eta2": 0.1376,
+    "p_value": 0.0,
+    "percentile": 100.0,
+    "significance": "***",
+    "n_molecules": 7385,
+    "n_active_experts": 3
+  },
+  {
+    "dataset": "LD50",
+    "tdc_name": "ld50_zhu",
+    "descriptor": "RingCount",
+    "observed_eta2": 0.2117,
+    "p_value": 0.0,
+    "percentile": 100.0,
+    "significance": "***",
+    "n_molecules": 7385,
+    "n_active_experts": 3
+  },
+  {
+    "dataset": "LD50",
+    "tdc_name": "ld50_zhu",
+    "descriptor": "HeavyAtoms",
+    "observed_eta2": 0.159,
+    "p_value": 0.0,
+    "percentile": 100.0,
+    "significance": "***",
+    "n_molecules": 7385,
+    "n_active_experts": 3
+  },
+  {
+    "dataset": "LD50",
+    "tdc_name": "ld50_zhu",
+    "descriptor": "MolRefract",
+    "observed_eta2": 0.118,
+    "p_value": 0.0,
+    "percentile": 100.0,
+    "significance": "***",
+    "n_molecules": 7385,
+    "n_active_experts": 3
+  },
+  {
+    "dataset": "Half-Life",
+    "tdc_name": "half_life_obach",
+    "descriptor": "LogP",
+    "observed_eta2": 0.0499,
+    "p_value": 0.0,
+    "percentile": 100.0,
+    "significance": "***",
+    "n_molecules": 667,
+    "n_active_experts": 3
+  },
+  {
+    "dataset": "Half-Life",
+    "tdc_name": "half_life_obach",
+    "descriptor": "HBD",
+    "observed_eta2": 0.0138,
+    "p_value": 0.01,
+    "percentile": 99.0,
+    "significance": "*",
+    "n_molecules": 667,
+    "n_active_experts": 3
+  },
+  {
+    "dataset": "Half-Life",
+    "tdc_name": "half_life_obach",
+    "descriptor": "ArRings",
+    "observed_eta2": 0.3312,
+    "p_value": 0.0,
+    "percentile": 100.0,
+    "significance": "***",
+    "n_molecules": 667,
+    "n_active_experts": 3
+  },
+  {
+    "dataset": "Half-Life",
+    "tdc_name": "half_life_obach",
+    "descriptor": "FracCSP3",
+    "observed_eta2": 0.2744,
+    "p_value": 0.0,
+    "percentile": 100.0,
+    "significance": "***",
+    "n_molecules": 667,
+    "n_active_experts": 3
+  },
+  {
+    "dataset": "Half-Life",
+    "tdc_name": "half_life_obach",
+    "descriptor": "QED",
+    "observed_eta2": 0.0263,
+    "p_value": 0.0,
+    "percentile": 100.0,
+    "significance": "***",
+    "n_molecules": 667,
+    "n_active_experts": 3
+  },
+  {
+    "dataset": "Lipo",
+    "tdc_name": "lipophilicity_astrazeneca",
+    "descriptor": "LogP",
+    "observed_eta2": 0.0758,
+    "p_value": 0.0,
+    "percentile": 100.0,
+    "significance": "***",
+    "n_molecules": 4200,
+    "n_active_experts": 7
+  }
+]

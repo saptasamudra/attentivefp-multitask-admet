@@ -45,3 +45,13 @@ desktop.ini
 *.log
 wandb/
 data/
+ 
+debug*.py 
+temp/ 
+*.npy 
+tdc_data/ 
+grover_data/ 
+"Learning and applying*" 
+"runner 2.py" 
+"' " 
+FILE 
