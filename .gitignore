@@ -1,57 +1,18 @@
-# Python
-__pycache__/
-*.py[cod]
-*.pyo
-*.egg-info/
-dist/
-build/
-.eggs/
-
-# Data (auto-downloaded, don't commit)
+checkpoints/
+models/
+baselines/chemprop/
+grover/models/
+grover_data/
+tdc_data/
 data/
-
-# Results (commit these)
-# results/ -- keep this
-
-# Jupyter checkpoints
-.ipynb_checkpoints/
-*.ipynb_checkpoints
-
-# Environment
-.env
-*.env
-molprop/
-venv/
-.venv/
-
-# OS
-.DS_Store
-Thumbs.db
-desktop.ini
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# Large files
+entropy_results/
+temp/
+logs/
+*.npy
+*.npz
 *.pt
-*.pth
-*.pkl
-*.h5
-
-# Logs
-*.log
-wandb/
-data/
- 
-debug*.py 
-temp/ 
-*.npy 
-tdc_data/ 
-grover_data/ 
-"Learning and applying*" 
-"runner 2.py" 
-"' " 
-FILE 
+*.zip
+*.html
+__pycache__/
+.ipynb_checkpoints/
+Learning and applying*
