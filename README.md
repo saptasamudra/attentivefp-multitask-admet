@@ -3,7 +3,7 @@
 > **Manuscript:** Gogoi S, Li Y. *Sparse mixture-of-experts routing spontaneously partitions chemical space along physicochemical axes for molecular property prediction.* Target: Journal of Cheminformatics (2026).
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Zenodo](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.20825377-blue)](https://doi.org/10.5281/zenodo.20825377)
+[![Zenodo](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.20855212-blue)](https://doi.org/10.5281/zenodo.20855212)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/)
 
 ---
@@ -142,4 +142,4 @@ MIT License — see [LICENSE](LICENSE).
 
 ---
 
-*Archived at Zenodo: [10.5281/zenodo.20825377](https://doi.org/10.5281/zenodo.20825377)*
+*Archived at Zenodo: [10.5281/zenodo.20855212](https://doi.org/10.5281/zenodo.20855212)*
