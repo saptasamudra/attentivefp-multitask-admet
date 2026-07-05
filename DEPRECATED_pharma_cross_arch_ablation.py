@@ -1,5 +1,21 @@
 """
-Cross-Architecture Ablation: Pharma-MoE on GIN and DMPNN
+================================================================================
+DEPRECATED — DO NOT USE FOR CURRENT MANUSCRIPT
+================================================================================
+This script tests Pharma-MoE (pharmacophore-guided routing) vs standard MoE
+on GIN and DMPNN. This is the OLD pharmacophore-guided story, which has been
+fully replaced by the unsupervised-routing narrative in the current manuscript
+(v4). The current paper makes NO pharmacophore claims anywhere.
+
+Do not use cross_arch_results.json (output of this script) for any figure
+or claim in the current manuscript. GIN transferability for the CURRENT
+(non-pharma) MoE plug-in has never been tested — see Fig. 4 honesty note.
+
+Kept for archival/reference only. Renamed from cross_arch_ablation.py on
+2026-07-06.\n"""\n\n
+
+"""
+Cross-Architecture Ablation: Pharma-MoE on GIN and DMPNN (ORIGINAL DOCSTRING, DEPRECATED)
 """
 import json, argparse
 import numpy as np

@@ -1,3 +1,4 @@
+# === Original entries (preserved from prior .gitignore) ===
 checkpoints/
 models/
 baselines/chemprop/
@@ -16,3 +17,113 @@ logs/
 __pycache__/
 .ipynb_checkpoints/
 Learning and applying*
+
+# === Results, figures, caches (regenerable, not source) ===
+*.json
+*.png
+*.pdf
+*.tar.gz
+inspect_output.txt
+
+# === Old/scratch figure scripts ===
+fig2_3d_vs_2d.png
+figures_submission/
+
+# === Debug / one-off check scripts ===
+debug*.py
+check_*.py
+diagnose.py
+dump_results.py
+scan_results.py
+inspect*.py
+
+# === Docstring/plot-title patch scripts (already applied) ===
+fix_docstring*.py
+fix_plot_title.py
+fix_freesolv_lipo.py
+fix_lipo.py
+fix_singletask.py
+find_lipophilicity.py
+quarantine_pharma_script.py
+
+# === Old pharmacophore-guided experiments (superseded — see README honesty note) ===
+pharma_moe_*.py
+adaptive_pharma_results.json
+
+# === Exploratory / superseded analysis scripts ===
+analyze_entropy_correlation*.py
+extract_routing_entropy.py
+extract_all_routing.py
+extract_smiles_and_specialize.py
+routing_entropy_analysis.py
+routing_entropy_sss.py
+routing_specialization_vs_gain.py
+routing_vs_gain.png
+sss_*.py
+sss_*.json
+specialization_*.py
+specialization_*.png
+full_specialization_all.py
+run_all_mae_specialization*.py
+retrain_and_extract.py
+moe_gain_vs_size.py
+moe_gain_vs_size_results.json
+chemical_diversity_analysis.py
+diversity_*.png
+diversity_*.json
+permutation_null_plots.png
+permutation_summary_heatmap.png
+learnability_diagnostic.png
+expert_specialization_*.json
+expert_specialization_*.md
+expert_*.png
+expanded_descriptor_*.png
+endpoint_*.png
+expert_profile_figure.py
+
+# === Baseline runner variants ===
+baseline_runner_complete.py
+baseline_runner_enhanced.py
+hiv_only.py
+tox21_only.py
+bencho.py
+chemprop_baseline.py
+benchmark_from_tox21.py
+
+# === Duplicate/legacy DMPNN and MoE variant scripts ===
+dmpnn_classif_fixed.py
+dmpnn_classif_fixed_v2.py
+dmpnn_lipo_fast.py
+dmpnn_regr_fixed.py
+moedmpnn_classif_fixed.py
+moedmpnn_regr_fixed.py
+
+# === Duplicate figure-making scripts ===
+fig2.py
+make_fig1.py
+make_fig2.py
+make_fig3.py
+make_fig_2.py
+make_fig_3.py
+make_fig_4.py
+
+# === Packaging / setup helpers ===
+make_zip.py
+setup_git.bat
+predownload.py
+save_previous.py
+
+# === Odd/stray filenames from copy-paste mishaps ===
+'
+FILE
+python
+runner 2.py
+
+# === Personal, non-research file — should never be in this repo ===
+生气.txt
+
+# === Standard Python/OS junk ===
+*.pyc
+*.ckpt
+.DS_Store
+Thumbs.db

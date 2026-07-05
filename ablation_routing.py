@@ -469,12 +469,15 @@ def main():
   and (2) Dense-wide, a single MLP with equivalent total width.
   All three models share identical GCN backbones and hyperparameters.
 
-  MoE-GCN outperforms both ablations across regression datasets
-  (Table X), confirming that the performance gain is attributable
-  to the routing mechanism itself — the ability to selectively
-  activate experts based on molecular chemical space position —
-  rather than the additional parameters introduced by the expert
-  networks.
+  MoE-GCN achieves comparable performance to both equal-parameter
+  ablations across regression datasets (Table X; paired significance
+  test in Results, p-values reported) — no configuration dominates
+  outright. This indicates the routing mechanism does not provide a
+  raw accuracy advantage over parameter-matched dense baselines.
+  Instead, routing's value lies in interpretable expert specialization
+  (Fig. 2), which the dense ablations cannot provide by construction:
+  Dense-uniform and Dense-wide match MoE-GCN's total parameter count
+  but lack any mechanism to route inputs to specialized subnetworks.
 """)
 
     # ── Plot ───────────────────────────────────────────────────────────────
@@ -501,7 +504,7 @@ def main():
                            fontsize=9, rotation=15, ha='right')
         ax.set_ylabel('RMSE (lower is better)', fontsize=11)
         ax.set_title('Ablation: MoE Routing vs Equal-Parameter Baselines\n'
-                     '* confirms gain from routing, not parameter count',
+                     '(comparable performance; routing adds interpretability, not accuracy)',
                      fontsize=11, fontweight='bold')
         ax.legend(fontsize=9)
         ax.grid(axis='y', alpha=0.25)
